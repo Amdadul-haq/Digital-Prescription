@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+  <div class="form-container">
+    <h2>Login</h2>
+    <form action="/login" method="post">
+      <div class="form-group">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" placeholder="Enter your username" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+      </div>
+      <button type="submit" class="submit-btn">Login</button>
+    </form>
+    <p>Don't have an account? <a href="/signup">Signup</a></p>
+
+    <!-- Toast -->
+    <div id="toast" class="toast">
+      <span id="toastMessage"></span>
+    </div>
+  </div>
+  <script>
+    const errorMessage = "<%= errorMessage || '' %>";
+    const successMessage = "<%= successMessage || '' %>";
+
+    const toast = document.getElementById("toast");
+
+    if (errorMessage) {
+      toast.style.backgroundColor = "#f44336";
+      toast.innerText = errorMessage;
+      toast.className = "toast show";
+      setTimeout(() => toast.className = toast.className.replace("show", ""), 3500);
+    } else if (successMessage) {
+      toast.style.backgroundColor = "#4caf50";
+      toast.innerText = successMessage ;
+      toast.className = "toast show";
+      setTimeout(() => toast.className = toast.className.replace("show", ""), 3500);
+    }
+  </script>
+</body>
+
+</html>
