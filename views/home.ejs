@@ -16,7 +16,7 @@
         <div id="toast" class="toast">
             <span id="toastMessage"></span>
         </div>
-        
+   </div>     
         <script>
             // Pass the toastMessage from the server to the client-side JavaScript
              const loginMessage = "<%= loginMessage || '' %>";
@@ -30,7 +30,7 @@
                     setTimeout(() => toast.className = toast.className.replace("show", ""), 3500);
                 }
         </script>
-    </div>
+   
 </body>
 
 </html>
