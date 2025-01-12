@@ -3,11 +3,11 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Playwrite IT Moderna", cursive;
+    font-family:Georgia, 'Times New Roman', Times, serif;
 }
 
 body{
-    height: 100vh;
+    height: 200vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -21,13 +21,13 @@ h2{
 
 
 .form-container {
-    width: 300px;
-    margin: 0 auto;
+    width: 750px;
+    
     padding: 20px;
     border: 2px solid grey;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
-
+    margin-top:400px;
 }
 
 .form-group{
@@ -72,7 +72,56 @@ h2{
 p{
     margin-top: 15px;
 }
+.navbar {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+    color: #fff;
+    padding: 10px 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
+.nav-logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #fff;
+    text-decoration: none;
+}
+
+.nav-menu {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+}
+
+.nav-link {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.3s;
+}
+
+.nav-link:hover {
+    color: #d99a12;
+}
+.back-btn{
+   display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #6da02f;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 10px;
+}
 .toast {
       visibility: hidden;
       min-width: 250px;
@@ -115,11 +164,134 @@ p{
         opacity: 0;
       }
     }
-  
+
+/* Dropdown Container */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Dropdown Toggle */
+.dropdown-toggle {
+    cursor: pointer;
+    text-decoration: none;
+    color: #fff;
+    transition: color 0.3s;
+}
+
+.dropdown-toggle:hover {
+    color: #d99a12;
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+ display: none;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.8);
+    min-width: 160px; /* Minimum width */
+    max-width: 100%; /* Prevent it from exceeding the parent/container width */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    border-radius: 5px;
+    top: 100%; /* Position below the dropdown-toggle */
+    left: auto; /* Default alignment */
+    right: 0; /* Align it to the right of the container */
+    overflow: hidden; /* Prevent content overflow */
+   
+}
+
+.dropdown-menu li {
+    list-style: none;
+}
+
+.dropdown-item {
+    color: #fff;
+    text-decoration: none;
+    display: block;
+    padding: 8px 16px;
+    transition: background-color 0.3s;
+}
+
+.dropdown-item:hover {
+    background-color: #066CDB;
+}
+
+/* Show Dropdown on Hover */
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
 
 
+.remove-btn {
+    background-color: #ff4d4d;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 3px;
+    margin-left: 10px;
+}
+
+.remove-btn:hover {
+    background-color: #ff1a1a;
+}
 
 
+.medicine-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
 
+.medicine-table th, .medicine-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.medicine-input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+.search-results {
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    max-height: 150px;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.search-item {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #ddd;
+}
+
+.search-item:hover {
+    background-color: #f1f1f1;
+}
+
+.add-btn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.remove-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 3px 8px;
+    cursor: pointer;
+}
+
+.add-btn:hover, .remove-btn:hover {
+    opacity: 0.8;
+}
 
 

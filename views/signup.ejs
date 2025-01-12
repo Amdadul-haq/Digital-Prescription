@@ -12,37 +12,55 @@
   <div class="form-container">
     <h2>Signup</h2>
     <form action="/signup" method="post">
+            <div class="form-group">
+              <label for="fullname">Enter you full name:</label>
+              <input type="text" id="fullname" name="fullname" placeholder="Enter your fullname" required>
+            </div>
       <div class="form-group">
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" placeholder="Enter your username" required>
       </div>
       <div class="form-group">
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+        <label for="qualification">Qualification:</label>
+        <input type="text" id="qualification" name="qualification" placeholder="Enter your qualification like :MBBS"
+          required>
+      </div>
+      <div class="form-group">
+        <label for="address">Adsress:</label>
+        <input type="text" id="address" name="address" placeholder="Enter your address" required>
+      </div>
+      <div class="form-group">
+        <label for="mobile-number">Mobile number:</label>
+        <input type="number" id="mobile-number" name="mobileNumber" placeholder="Enter your mobile number" required>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Create password:</label>
+        <input type="password" id="password" name="password" placeholder="Enter password here" required>
       </div>
       <button type="submit" class="submit-btn">Signup</button>
       <p>Already have and account? <a href="/">Login</a></p>
     </form>
 
-        <!-- Toast -->
-        <div id="toast" class="toast">
-          <span id="toastMessage"></span>
-        </div>
-        </div>
-        <script>
-          const errorMessage = "<%= errorMessage || '' %>";
-
-          const toast = document.getElementById("toast");
-
-          if (errorMessage) {
-            toast.style.backgroundColor = "#f44336";
-            toast.innerText = errorMessage;
-            toast.className = "toast show";
-            setTimeout(() => toast.className = toast.className.replace("show", ""), 3500);
-          } 
-        </script>
-
     <!-- Toast -->
+    <div id="toast" class="toast">
+      <span id="toastMessage"></span>
+    </div>
+  </div>
+  <script>
+    const errorMessage = "<%= errorMessage || '' %>";
+
+    const toast = document.getElementById("toast");
+
+    if (errorMessage) {
+      toast.style.backgroundColor = "#f44336";
+      toast.innerText = errorMessage;
+      toast.className = "toast show";
+      setTimeout(() => toast.className = toast.className.replace("show", ""), 3500);
+    } 
+  </script>
+
+  <!-- Toast -->
 </body>
 
 </html>

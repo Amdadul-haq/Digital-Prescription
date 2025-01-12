@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prescription</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+                .Main {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-top: 20px;
+        }
+        
+
+        .footer-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0;
+        }
+
+        .header2 {
+            text-align: right;
+        }
+
+        .footer2 {
+            text-align: left;
+        }
+
+        .header1,
+        .header2 {
+            flex: 1;
+            margin: 0 10px;
+        }
+
+        .header1 p,
+        .header2 p {
+            margin: 5px 0;
+        }
+
+        .header1 p:first-child,
+        .header2 p:first-child {
+            font-size: 20px;
+            color: darkgreen;
+        }
+
+        .header1 p:last-child,
+        .header2 p:last-child {
+            color: red;
+        }
+
+        .details p {
+            display: flex;
+            border-bottom: 2px solid;
+            border-top: 2px solid;
+            justify-content: space-between;
+            padding: 12px;
+            margin: 15px 0;
+        }
+
+        .medicine-table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+
+        }
+
+        .medicine-table th,
+        .medicine-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        .medicine-table th {
+            background-color: #0a2846;
+            color: white;
+        }
+
+        .serial p {
+            display: flex;
+            justify-content: center;
+            justify-items: center;
+            border: 2px solid;
+            border-radius: 3px;
+            border: 4px solid #ff6600;
+            text-align: center;
+            color: red;
+            max-width: fit-content;
+            max-height: fit-content;
+            margin: auto;
+            padding: 10px;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header-container">
+        <div class="header1">
+            <p>ডাঃ মোঃ সালমান ফার্সি</p>
+            <p style="color: #007BFF; font-size: 16px;">বি. এন. এম সি (ঢাকা)</p>
+            <p style="color: black; font-size: 16px"><b>জে.এ.এইচ.এস, গাজীপুর (পলিপাস)</b></p>
+            <p style="color: #007BFF; font-size: 15px"> সি.পি রংপুর কমিউনিটি প্যারামেডিক ইন্সটিটিউট<br>এফ.টি বদরগঞ্জ
+                উপজেলা স্বাস্থ্য কমপ্লেক্স</p>
+            <p style="color: red;font-size:16px ;">জেনারেল প্রাকটিশনার</p>
+            <p style="color: darkgreen; font-size: 12px;">মেডিসিন, ডায়াবেটিস, উচ্চ রক্তচাপ, বাত ব্যাথা, পলিপাস রোগে
+                অভিজ্ঞ</p>
+            <p>মোবাইলঃ ০১৩১৮৯০৫৮৫৭</p>
+        </div>
+        <div class="header2">
+            <p>Dr. Salman Farshi</p>
+            <p style="color: #007BFF; font-size: 16px;">B.N.M.C (Dhaka)</p>
+            <p style="color: black; font-size: 16px"><b>J.A.H.S, Gazipur (Polypus)</b></p>
+            <p style="color: #007BFF; font-size: 15px">C.P Rangpur Community Paramedic Institute<br>F.T Badarganj
+                Upazila Health Complex</p>
+            <p style="color: red;font-size:16px ;">General Practitioner</p>
+            <p style="color: darkgreen; font-size: 12px;">Expert in Medicine, Diabetes, Hypertension, Bones Ache &
+                Polypus</p>
+            <p>Mobile: 01318905857</p>
+        </div>
+
+    </div>
+
+    <div class="details">
+        <p>
+            <strong>ID:</strong>
+            <%= id %>
+                <strong>Patient Name:</strong>
+                <%= patientName %>
+                    <strong>Patient Age:</strong>
+                    <%= patientAge %> years
+                        <strong>Date:</strong>
+                        <%= date %>
+        </p>
+    </div>
+    <div class="Main">
+        <div class="others">
+            <p><strong>Chief complaints:</strong>
+                <%= cc %>
+            </p>
+            <p><strong>On Examinations:</strong>
+            <p><strong>BP : </strong>
+                <%= bp %>
+            </p>
+            <p><strong>Pulse : </strong>
+                <%= pulse %>
+            </p>
+            <p><strong>Weight : </strong>
+                <%= weight %>Kg
+            </p>
+            <p><strong>Temperature : </strong>
+                <%= temperature %>&#x2109;.
+            </p>
+            </p>
+            <p><strong>Diagnosis:</strong>
+                <%= diagnosis %>
+            </p>
+            <p><strong>Test:</strong>
+                <%= test %>
+            </p>
+
+
+        </div>
+
+        <div class="Medicine_Info">
+            <table class="medicine-table">
+                <thead>
+                    <tr><span style='font-size:30px;'>&#8478;</span>
+                        <th>#</th>
+                        <th>Medicine</th>
+                        <th>Feeding Rules</th>
+                        <th>Feed Days</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% medicines.forEach((medicine, index)=> { %>
+                        <tr>
+                            <td>
+                                <%= index + 1 %>
+                            </td>
+                            <td>
+                                <%= medicine.name %>
+                            </td>
+                            <td>
+                                <%= medicine.rules %>
+                            </td>
+                            <td>
+                                <%= medicine.days %>
+                            </td>
+                        </tr>
+                        <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <p> <strong>
+            <%=nextVisitDate %>
+        </strong> দিন পর আবার আসবেন। </p>
+    <div class="footer-container">
+        <div class="footer1">
+            <p style="color:red">চেম্বার:</p>
+            <p style="color: darkmagenta;font-size: 10px;">এন এ ফার্মেসী<br>
+                শালবাড়ি, বদরগঞ্জ, রংপুর।<br>
+                রোগী দেখার সময়:
+                প্রতি বৃহস্পতিবার বিকাল ৪ টা হতে রাত ১০ টা ও <br>
+                প্রতি শুক্রবার ও শনিবার সকাল ৯ টা হতে দুপুর ১২ টা <br>
+                এবং বিকাল ৪ টা হতে রাত ১০ টা পর্যন্ত</p>
+        </div>
+        <div class="footer2">
+            <p style="color:red"><u>আমাদের সেবা সমূহ:</u></p>
+            <p style="color: darkmagenta; font-size: 10px;">&#x27A4;বিনা অপারেশনে ন্যাচারাল মেডিসিনের মাধ্যমে পলিপাস
+                নির্মূল করা হয় । <br>
+                &#x27A4; মেডিসিন, ডায়াবেটিস, উচ্চ রক্তচাপ, বাত ব্যাথা রোগের
+                চিকিৎসা ও পরামর্শ প্রদান করা হয়। <br>
+                &#x27A4;জেনারেল সার্জারী । <br>
+                &#x27A4;এজমা, হাপানি ও শ্বাসকষ্ট রোগীদের নেবুলাইজার মেশিনে
+                গ্যাস দেওয়া হয়।<br>
+                &#x27A4;ডিজিটাল মেশিনে উচ্চরক্ত চাপ ও ডায়াবেটিস পরীক্ষা করা
+                হয়।<br>
+                &#x27A4;রক্তের গ্রæপ পরীক্ষা করা হয় ।<br>
+                &#x27A4;ডিজিটাল কিট দিয়ে প্রেগনেন্সি পরীক্ষা করা হয়।</p>
+
+            </p>
+        </div>
+
+    </div>
+    <div class="serial">
+        <p><b>সিরিয়ালের জন্য মোবাইল: ০১৭৫৫১৯১১৫৫</b></p>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Medicine</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+                body {
+background: rgb(2,0,36);
+background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%);
+            padding-bottom: 40px;
+        }
+
+                .navbar {
+            background-color: #007bff;
+        }
+
+        .navbar a.nav-link,
+        .nav-logo {
+            color: white !important;
+        }
+
+        .navbar a.nav-link:hover {
+            color: #d4e0ff !important;
+            
+        }
+
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a href="/home" class="navbar-brand nav-logo">Digital Prescription</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a href="/home" class="nav-link">Home</a></li>
+                    <li class="nav-item"><a href="/add-medicine" class="nav-link">Add Medicine</a></li>
+                    <li class="nav-item"><a href="/prescription" class="nav-link">Prescription</a></li>
+                    <li class="nav-item"><a href="/add-patient" class="nav-link">Add Patient</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <%= username %>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="/settings">Settings</a></li>
+                            <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8 col-sm-10">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h2 class="text-center mb-4">Add Medicine</h2>
+                        <form action="/add-medicine" method="post">
+                            <div class="mb-3">
+                                <label for="brandName" class="form-label">Brand name:</label>
+                                <input type="text" id="brandName" name="brandName" class="form-control"
+                                    placeholder="Enter Brand name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="dosageForm" class="form-label">Dosage form:</label>
+                                <input type="text" id="dosageForm" name="dosageForm" class="form-control"
+                                    placeholder="Enter dosage form" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="generic" class="form-label">Generic:</label>
+                                <input type="text" id="generic" name="generic" class="form-control"
+                                    placeholder="Enter generic" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="strength" class="form-label">Strength:</label>
+                                <input type="text" id="strength" name="strength" class="form-control"
+                                    placeholder="Enter strength" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="manufacturer" class="form-label">Manufacturer:</label>
+                                <input type="text" id="manufacturer" name="manufacturer" class="form-control"
+                                    placeholder="Enter manufacturer" required>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <button type="submit" class="btn btn-primary">Add Medicine</button>
+                                <button type="button" class="btn btn-secondary"
+                                    onclick="window.location.href='/home'">Back</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Message -->
+    <div id="toast" class="toast align-items-center text-bg-success position-fixed bottom-0 end-0 p-3" role="alert"
+        aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div id="toastMessage" class="toast-body"></div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                aria-label="Close"></button>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const successMessage = "<%= successMessage || '' %>";
+        const errorMessage = "<%= errorMessage || '' %>";
+
+        const toastElement = document.getElementById("toast");
+        const toastMessage = document.getElementById("toastMessage");
+
+        if (successMessage) {
+            toastElement.classList.replace("text-bg-success", "text-bg-primary");
+            toastMessage.innerText = successMessage;
+            const toast = new bootstrap.Toast(toastElement);
+            toast.show();
+        } else if (errorMessage) {
+            toastElement.classList.replace("text-bg-success", "text-bg-danger");
+            toastMessage.innerText = errorMessage;
+            const toast = new bootstrap.Toast(toastElement);
+            toast.show();
+        }
+    </script>
+</body>
+
+</html>

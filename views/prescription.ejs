@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prescription</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: rgb(2, 0, 36);
+            background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 35%, rgba(0, 212, 255, 1) 100%);
+            padding-bottom: 40px;
+        }
+
+        .navbar {
+            background-color: #007bff;
+        }
+
+        .navbar a.nav-link,
+        .nav-logo {
+            color: white !important;
+        }
+
+        .navbar a.nav-link:hover {
+            color: #d4e0ff !important;
+        }
+
+        .form-container {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-results {
+            position: absolute;
+            z-index: 10;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .search-item {
+            padding: 0.5rem;
+            cursor: pointer;
+        }
+
+        .search-item:hover {
+            background-color: #f1f1f1;
+        }
+
+        .add-btn {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 5px;
+        }
+
+        .remove-btn {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a href="/home" class="navbar-brand nav-logo">Digital Prescription</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a href="/home" class="nav-link">Home</a></li>
+                    <li class="nav-item"><a href="/add-medicine" class="nav-link">Add Medicine</a></li>
+                    <li class="nav-item"><a href="/prescription" class="nav-link">Prescription</a></li>
+                    <li class="nav-item"><a href="/add-patient" class="nav-link">Add Patient</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <%= username %>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="/settings">Settings</a></li>
+                            <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Form Container -->
+    <div class="container mt-4">
+        <div class="form-container">
+            <h2 class="text-center mb-4">Prescription Form</h2>
+            <form action="/add-prescription" method="post">
+                <div class="row mb-3">
+                    <div class="col-md-6 form-group">
+                        <label for="id">ID:</label>
+                        <input type="text" id="id" name="id" class="form-control" placeholder="Enter ID" required>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label for="patientName">Patient Name:</label>
+                        <input type="text" id="patientName" name="patientName" class="form-control"
+                            placeholder="Enter patient name" required>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6 form-group">
+                        <label for="patientAge">Patient Age:</label>
+                        <input type="number" id="patientAge" name="patientAge" class="form-control"
+                            placeholder="Enter patient age">
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label for="cc">Chief Complaints:</label>
+                        <input type="text" id="cc" name="cc" class="form-control" placeholder="Chief complaints"
+                            required>
+                    </div>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label>On Examinations:</label>
+                    <div class="row">
+                        <div class="col-md-3 mb-2">
+                            <input type="text" id="bp" name="bp" class="form-control" placeholder="BP">
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <input type="number" id="pulse" name="pulse" class="form-control" placeholder="Pulse">
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <input type="number" id="weight" name="weight" class="form-control" placeholder="Weight">
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <input type="text" id="temperature" name="temperature" class="form-control"
+                                placeholder="Temperature">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6 form-group">
+                        <label for="diagonosis">Diagnosis:</label>
+                        <input type="text" id="diagonosis" name="diagonosis" class="form-control"
+                            placeholder="Enter diagnosis">
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label for="test">Test:</label>
+                        <input type="text" id="test" name="test" class="form-control" placeholder="Enter test">
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6 form-group">
+                        <label for="history">History : </label>
+                        <input type="text" id="history" name="history" class="form-control">
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label for="nextVisitDate">Next Visit (days):</label>
+                        <input type="number" id="nextVisitDate" name="nextVisitDate" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label>Medicines:</label>
+                    <table class="medicine-table table table-bordered">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Medicine</th>
+                                <th>Feeding Rules</th>
+                                <th>Feed Days</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="medicineRows">
+                            <tr>
+                                <td>
+                                    <input type="text" class="form-control" name="medicine"
+                                        placeholder="Search medicine" onkeyup="searchMedicine(this)" required>
+                                    <div class="search-results"></div>
+                                </td>
+                                <td>
+                                    <select name="feedingRules" class="form-select" required>
+                                        <option value="১+১+১(খাওয়ার পর)">১+১+১(খাওয়ার পর)</option>
+                                        <option value="১+১+১(খাওয়ার আগে)">১+১+১(খাওয়ার আগে)</option>
+                                        <option value="১+১+১(খাওয়ার পর)">১+১+১(খাওয়ার পর)</option>
+                                        <option value="১+১+১(খাওয়ার আগে)">১+১+১(খাওয়ার আগে)</option>
+                                        <option value="১+০+১(খাওয়ার পর)">১+০+১(খাওয়ার পর)</option>
+                                        <option value="১+০+১(খাওয়ার আগে)">১+০+১(খাওয়ার আগে)</option>
+                                        <option value="০+০+১(রাত)">০+০+১(রাত)</option>
+                                        <option value="১+০+০(সকাল)">১+০+০(সকাল)</option>
+                                        <option value="......................">......................</option>
+
+
+                                    </select>
+                                </td>
+                                <td>
+                                    <select name="feedDays" class="form-select" required>
+                                        <option value=".................">.................</option>
+                                        <option value="৩ দিন">৩দিন</option>
+                                        <option value="৭ দিন">৭দিন</option>
+                                        <option value="১৪ দিন">১৪দিন</option>
+                                        <option value="৩০ দিন">৩০দিন</option>
+                                        <option value="৬০ দিন">৬০দিন</option>
+                                        <option value="৯০ দিন">৯০দিন</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <button type="button" class="add-btn" onclick="addMedicineRow()">+</button>
+                                    <button type="button" class="remove-btn"
+                                        onclick="removeMedicineRow(this)">&#x2715;</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="button" class="btn btn-secondary" onclick="window.location.href='/home'">Back</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function addMedicineRow() {
+            const tableBody = document.getElementById('medicineRows');
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td>
+                    <input type="text" class="form-control" name="medicine" placeholder="Search medicine" onkeyup="searchMedicine(this)" required>
+                    <div class="search-results"></div>
+                </td>
+                <td>
+                    <select name="feedingRules" class="form-select" required>
+                        <option value="১+১+১(খাওয়ার পর)">১+১+১(খাওয়ার পর)</option>
+                        <option value="১+১+১(খাওয়ার আগে)">১+১+১(খাওয়ার আগে)</option>
+                        <option value="১+০+১(খাওয়ার পর)">১+০+১(খাওয়ার পর)</option>
+                        <option value="১+০+১(খাওয়ার আগে)">১+০+১(খাওয়ার আগে)</option>
+                        <option value="০+০+১(রাত)">০+০+১(রাত)</option>
+                       <option value="১+০+০(সকাল)">১+০+০(সকাল)</option>
+                       <option value="......................">......................</option>
+                      
+                    </select>
+                </td>
+                <td>
+                    <select name="feedDays" class="form-select" required>
+                        <option value=".................">.................</option>
+                        <option value="৩ দিন">৩দিন</option>
+                        <option value="৭ দিন">৭দিন</option>
+                        <option value="১৪ দিন">১৪দিন</option>
+                        <option value="৩০ দিন">৩০দিন</option>
+                        <option value="৬০ দিন">৬০দিন</option>
+                        <option value="৯০ দিন">৯০দিন</option>
+                    </select>
+                </td>
+                <td>
+                    <button type="button" class="add-btn" onclick="addMedicineRow()">+</button>
+                    <button type="button" class="remove-btn" onclick="removeMedicineRow(this)">&#x2715;</button>
+                </td>
+            `;
+            tableBody.appendChild(newRow);
+        }
+
+        function removeMedicineRow(button) {
+            const row = button.closest('tr');
+            row.remove();
+        }
+
+        async function searchMedicine(input) {
+            const query = input.value.trim();
+            const resultsDiv = input.nextElementSibling;
+
+            if (query.length === 0) {
+                resultsDiv.innerHTML = '';
+                return;
+            }
+
+            try {
+                const response = await fetch(`/search-medicine?query=${query}`);
+                const medicines = await response.json();
+
+                resultsDiv.innerHTML = medicines.map(medicine => `
+                    <div class="search-item" onclick="selectMedicine('${medicine.brandName}', this)">
+                        ${medicine.brandName}
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error fetching medicines:', error);
+            }
+        }
+
+        function selectMedicine(brandName, item) {
+            const input = item.closest('.search-results').previousElementSibling;
+            input.value = brandName;
+            item.closest('.search-results').innerHTML = '';
+        }
+    </script>
+</body>
+
+</html>
