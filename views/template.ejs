@@ -8,7 +8,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
+            margin: 0px;
             padding: 20px;
             color: #333;
         }
@@ -17,15 +17,30 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
-                .Main {
+
+        .Main {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-top: 20px;
+
+            max-height: 700px;
+            max-width: auto;
+            border-bottom: 2px solid;
+            margin-bottom: 10px;
         }
-        
+
+        .milon {
+            height: 700px;
+            border-left: 2px solid;
+
+
+        }
+
+        .Medicine_Info {
+            width: 100%;
+        }
 
         .footer-container {
             display: flex;
@@ -36,6 +51,7 @@
 
         .header2 {
             text-align: right;
+
         }
 
         .footer2 {
@@ -45,7 +61,6 @@
         .header1,
         .header2 {
             flex: 1;
-            margin: 0 10px;
         }
 
         .header1 p,
@@ -70,26 +85,38 @@
             border-top: 2px solid;
             justify-content: space-between;
             padding: 12px;
-            margin: 15px 0;
+            margin: 0px;
+
+        }
+
+        .others {
+            max-height: 700px;
+            width: 300px;
+            max-width: 350px;
+
+        }
+
+        .others p {
+            font-size: 12px;
+            margin-top: 5px;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         }
 
         .medicine-table {
             border-collapse: collapse;
-            width: 100%;
-            margin: 20px 0;
+            max-height: 700px;
+            width: 550px;
+            max-width: auto;
+            margin-left: 40px;
+
+            margin-top: 20px;
+
 
         }
 
-        .medicine-table th,
         .medicine-table td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: center;
-        }
+            padding: 2px;
 
-        .medicine-table th {
-            background-color: #0a2846;
-            color: white;
         }
 
         .serial p {
@@ -107,6 +134,33 @@
             padding: 10px;
 
         }
+
+        b {
+            margin-left: 10px;
+            font-size: large;
+            font-family: 'Arial Narrow Bold';
+        }
+
+        #medicine_rule_days {
+            font-size: 15px;
+          
+        }
+
+        #medicine_name {
+            font-size: 20px;
+         font-weight: 530;
+           font-family: 'Times New Roman', Times, serif;
+
+        }
+
+        li {
+            margin-left: 1px;
+            font-size: 14px;
+            width: 300px;
+            max-width: 300px;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
     </style>
 </head>
 
@@ -146,67 +200,92 @@
                     <strong>Patient Age:</strong>
                     <%= patientAge %> years
                         <strong>Date:</strong>
-                        <%= date %>
+                        <%= generatedOn %>
         </p>
     </div>
     <div class="Main">
+
         <div class="others">
             <p><strong>Chief complaints:</strong>
-                <%= cc %>
+            <ul>
+                <% complaintsList.forEach((complaint)=> { %>
+                    <li>
+                        <%= complaint %>
+                    </li>
+                    <% }) %>
+            </ul>
             </p>
             <p><strong>On Examinations:</strong>
             <p><strong>BP : </strong>
-                <%= bp %>
+                <%=bp %> mm(Hg) <strong>Pulse : </strong>
+                    <%=pulse %> bpm.<br>
+                        <strong>Weight:</strong>
+                        <%= weight %>Kg <strong>Temperature:</strong>
+                            <%=temperature %>&#x2109;.
             </p>
-            <p><strong>Pulse : </strong>
-                <%= pulse %>
-            </p>
-            <p><strong>Weight : </strong>
-                <%= weight %>Kg
-            </p>
-            <p><strong>Temperature : </strong>
-                <%= temperature %>&#x2109;.
-            </p>
+            <!-- <p><strong>Weight:</strong>
+                <%= weight %>Kg <strong>Temperature:</strong>
+                    <%=temperature %>&#x2109;.
+            </p> -->
             </p>
             <p><strong>Diagnosis:</strong>
                 <%= diagnosis %>
             </p>
-            <p><strong>Test:</strong>
-                <%= test %>
+            <p><strong>Test :</strong>
+            <ul>
+                <% testList.forEach((test)=> { %>
+                    <li>
+                        <%= test %>
+                    </li>
+                    <% }) %>
+            </ul>
+            </p>
+            <p><strong>History :</strong>
+            <ul>
+                <% historyList.forEach((history)=> { %>
+                    <li>
+                        <%= history %>
+                    </li>
+                    <% }) %>
+            </ul>
             </p>
 
 
         </div>
 
+        <div class="milon">
+
+        </div>
         <div class="Medicine_Info">
             <table class="medicine-table">
-                <thead>
-                    <tr><span style='font-size:30px;'>&#8478;</span>
-                        <th>#</th>
-                        <th>Medicine</th>
-                        <th>Feeding Rules</th>
-                        <th>Feed Days</th>
-                    </tr>
-                </thead>
                 <tbody>
-                    <% medicines.forEach((medicine, index)=> { %>
-                        <tr>
-                            <td>
-                                <%= index + 1 %>
-                            </td>
-                            <td>
-                                <%= medicine.name %>
-                            </td>
-                            <td>
-                                <%= medicine.rules %>
-                            </td>
-                            <td>
-                                <%= medicine.days %>
-                            </td>
-                        </tr>
-                        <% }) %>
+                    <b>R</b><sub>x</sub>
+                        <% medicines.forEach((medicine)=> { %>
+                    <tr id="medicine_name">
+                        <td colspan="2">
+                            <%= medicine.name %>
+                        </td>
+                    </tr>
+
+                    <tr id="medicine_rule_days">
+                        <td>
+                            <%= medicine.rules %>
+                        </td>
+                        <td>
+                            <%= medicine.days %>
+                            
+                        </td>
+                        
+                    </tr>
+                 
+                    <% }) %>
+                   
+
                 </tbody>
+                
             </table>
+            <!-- <p id="signature">
+                ................<br><strong>Signature</strong></p> -->
         </div>
     </div>
 

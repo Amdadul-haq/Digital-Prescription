@@ -5,8 +5,9 @@ const path = require('path');
 const session = require('express-session');
 const puppeteer = require('puppeteer');
 const ejs = require('ejs');
+require('dotenv').config();
 const app = express();
-const port = 80;
+const PORT = process.env.PORT || 3000;
 
 // Middleware to parse JSON and URL-encoded bodies
 app.use(express.json());
@@ -67,39 +68,6 @@ app.get('/prescription', async (req, res) => {
 
 });
 
-
-// app.get('/medicines/search', async (req, res) => {
-//   const { brandName } = req.query;
-
-//   if (!brandName) {
-//     return res.status(400).json({ message: 'Brand name is required' });
-//   }
-
-//   try {
-//     // Perform a regex-based search for partial matches (starts with "brandName")
-//     const partialMatches = await Medicine.find({
-//       brandName: { $regex: `^${brandName}`, $options: 'i' } // Case-insensitive matching
-//     });
-
-//     if (partialMatches.length > 0) {
-//       return res.json(partialMatches);
-//     }
-
-//     // Fallback to a text-based search if no partial matches are found
-//     const textMatches = await Medicine.find({
-//       $text: { $search: brandName }
-//     }).sort({ score: { $meta: "textScore" } }).select({ score: { $meta: "textScore" } });
-
-//     if (textMatches.length === 0) {
-//       return res.status(404).json({ message: 'No medicine found for the given brand name.' });
-//     }
-
-//     res.json(textMatches);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ message: 'Error fetching medicine data.', error });
-//   }
-// });
 
 app.get('/medicines/search', async (req, res) => {
   const { brandName, page = 1, limit = 10 } = req.query;
@@ -320,7 +288,7 @@ app.post("/add-prescription", async (req, res) => {
     }));
 
     // Render EJS template with data
-    const templatePath = path.join(__dirname, 'template.ejs');
+    const templatePath = path.join(__dirname,'views', 'template.ejs');
     const htmlContent = await ejs.renderFile(templatePath, {
       // doctorName: username,
       id,
@@ -380,6 +348,6 @@ app.post("/add-prescription", async (req, res) => {
 
 
 // Start Server
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
 });

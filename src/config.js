@@ -1,9 +1,11 @@
 // Importing necessary modules
 const { name } = require("ejs"); // Destructuring 'name' from 'ejs' module (not used in this snippet)
-const mongoose = require("mongoose"); // Importing mongoose for MongoDB operations
+const mongoose = require("mongoose");// Importing mongoose for MongoDB operations
+require('dotenv').config();
+
 
 // Connecting to MongoDB
-const connect = mongoose.connect("mongodb+srv://milon:milon@cluster0.3ccfb.mongodb.net/Prescription") 
+const connect = mongoose.connect(process.env.MONGO_URI);
 // Handling connection success and failure
 connect.then(() => {
     console.log("database connected"); // Log message when database connection is successful
