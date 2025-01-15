@@ -135,11 +135,6 @@
 
         }
 
-        b {
-            
-            font-size:large;
-        }
-
         #medicine_rule_days {
             font-size: 15px;
           
@@ -159,12 +154,15 @@
             max-width: 300px;
            
         }
+        sub{
+            font-size: 15px;
+        }
         .rx{
             margin-top: 12px;
             margin-left: 15px;
             height:3px;
             font-weight: larger;
-            font-size: 35px;
+            font-size: 25px;
             color:#1a213fe2;
 
            
@@ -267,7 +265,7 @@
         </div>
         <div class="Medicine_Info">
             <table class="medicine-table">
-                   <p class="rx">&#x211E;</p>
+                   <p class="rx"><b>R<sub>x</sub></b></p>
                         <% medicines.forEach((medicine)=> { %>
                     <tr id="medicine_name">
                         <td colspan="2">
