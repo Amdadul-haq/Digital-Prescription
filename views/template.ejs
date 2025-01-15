@@ -26,14 +26,14 @@
             justify-content: space-between;
             align-items: flex-start;
 
-            max-height: 700px;
+            max-height: 620px;
             max-width: auto;
             border-bottom: 2px solid;
             margin-bottom: 10px;
         }
 
         .milon {
-            height: 700px;
+            height: 620px;
             border-left: 2px solid;
 
 
@@ -104,12 +104,12 @@
 
         .medicine-table {
             border-collapse: collapse;
-            max-height: 700px;
+            
             width: 550px;
             max-width: auto;
             margin-left: 40px;
 
-            margin-top: 20px;
+            margin-top: 0px;
 
 
         }
@@ -125,7 +125,7 @@
             justify-items: center;
             border: 2px solid;
             border-radius: 3px;
-            border: 4px solid #ff6600;
+            border: 3px solid #ff6600;
             text-align: center;
             color: red;
             max-width: fit-content;
@@ -141,7 +141,7 @@
         }
 
         #medicine_rule_days {
-            font-size: 16px;
+            font-size: 15px;
           
         }
 
@@ -157,6 +157,16 @@
             font-size: 14px;
             width: 300px;
             max-width: 300px;
+           
+        }
+        .rx{
+            margin-top: 12px;
+            margin-left: 15px;
+            height:3px;
+            font-weight: larger;
+            font-size: 35px;
+            color:#1a213fe2;
+
            
         }
 
@@ -257,8 +267,7 @@
         </div>
         <div class="Medicine_Info">
             <table class="medicine-table">
-                <tbody>
-                    <b>R</b><sub>x</sub>
+                   <p class="rx">&#x211E;</p>
                         <% medicines.forEach((medicine)=> { %>
                     <tr id="medicine_name">
                         <td colspan="2">
