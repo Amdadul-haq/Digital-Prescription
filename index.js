@@ -134,7 +134,7 @@ app.post("/signup", async (req, res) => {
       const newUser = new collection({ fullname: fullname, name: username, qualification: qualification, address: address, mobileNumber: mobileNumber, password: hashedPassword });
       await newUser.save();
 
-      res.render("login", { successMessage: "Account created successfully!", errorMessage: '', loginMessage: '' });
+      res.render("login", { successMessage: "Account created successfully!", errorMessage: '' });
     }
   } catch (err) {
     console.error(err);
@@ -150,7 +150,7 @@ app.post('/login', async (req, res) => {
   try {
     const user = await collection.findOne({ name: username });
     if (!user) {
-      return res.render("login", { errorMessage: "Invalid username or password.", successMessage: '', loginMessage: '' });
+      return res.render("login", { errorMessage: "Invalid username or password.", successMessage: '' });
     }
 
     const isMatch = await bcryptjs.compare(password, user.password);
@@ -162,13 +162,13 @@ app.post('/login', async (req, res) => {
 
       // req.session.
       // res.redirect('/home');
-      res.render("home", { loginMessage: "Successfully logged in!", username: req.session.username });
+      res.render("home", { successMessage: "Successfully logged in!", username: req.session.username });
     } else {
-      res.render("login", { errorMessage: "Invalid username or password.", successMessage: '', loginMessage: '' });
+      res.render("login", { errorMessage: "Invalid username or password.", successMessage: '' });
     }
   } catch (err) {
     console.error(err);
-    res.render("login", { errorMessage: "An error occurred. Please try again.", successMessage: '', loginMessage: '' });
+    res.render("login", { errorMessage: "An error occurred. Please try again.", successMessage: '' });
   }
 });
 
