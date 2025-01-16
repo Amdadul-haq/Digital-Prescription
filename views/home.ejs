@@ -24,16 +24,32 @@
 
         .home-container {
             margin-top: 10rem;
-            
+
         }
 
         #toast {
-            top: 400px;
-            z-index: 1055;
-            width: auto;
-            max-width: 90%;
+            visibility: hidden;
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.5s;
+            text-align: center;
         }
 
+        #toast.show {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* 
         @media (max-width: 576px) {
             #toast {
                 top: 10px;
@@ -41,7 +57,7 @@
                 left: 10px;
                 max-width: 100%;
             }
-        }
+        } */
 
         .medicine-card {
             transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
@@ -83,10 +99,11 @@
             justify-content: space-between;
             max-width: 90%;
         }
-        .results-container {
-    margin-bottom: 3rem; /* Adjust as needed */
-}
 
+        .results-container {
+            margin-bottom: 3rem;
+            /* Adjust as needed */
+        }
     </style>
 </head>
 
@@ -236,6 +253,24 @@
                     fetchResults(page);
                 });
             });
+        }
+    </script>
+    <script>
+        const errorMessage = "<%= errorMessage || '' %>";
+        const successMessage = "<%= successMessage || '' %>";
+
+        const toast = document.getElementById("toast");
+
+        if (errorMessage) {
+            toast.style.backgroundColor = "#f44336";
+            toast.innerText = errorMessage;
+            toast.className = "toast show";
+            setTimeout(() => toast.className = toast.className.replace("show", ""), 3500);
+        } else if (successMessage) {
+            toast.style.backgroundColor = "#4caf50";
+            toast.innerText = successMessage;
+            toast.className = "toast show";
+            setTimeout(() => toast.className = toast.className.replace("show", ""), 3500);
         }
     </script>
 </body>

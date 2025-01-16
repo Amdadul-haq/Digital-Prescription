@@ -28,7 +28,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // Route: Login Page
 app.get('/', (req, res) => {
-  res.render('login', { errorMessage: '', successMessage: '', loginMessage: '' });
+  res.render('login', { errorMessage: '', successMessage: '' });
 });
 
 // Route: Signup Page
@@ -42,7 +42,7 @@ app.get('/home', (req, res) => {
   if (!req.session.username) {
     return res.redirect('/'); // Redirect to login if not logged in
   }
-  res.render('home', { username: req.session.username, loginMessage: '' });
+  res.render('home', { username: req.session.username, successMessage: '', errorMessage:'' });
 });
 
 
@@ -162,7 +162,7 @@ app.post('/login', async (req, res) => {
 
       // req.session.
       // res.redirect('/home');
-      res.render("home", { successMessage: "Successfully logged in!", username: req.session.username });
+      res.render("home", { successMessage: "Successfully logged in!", errorMessage:'', username: req.session.username });
     } else {
       res.render("login", { errorMessage: "Invalid username or password.", successMessage: '' });
     }
