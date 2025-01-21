@@ -8,7 +8,7 @@
     <title>Prescription</title>
     <style>
         body {
-            font-family:'Noto Sans Bengali',Arial, sans-serif;
+            font-family: 'Noto Sans Bengali', Arial, sans-serif;
             margin: 0px;
             padding: 20px;
             color: #333;
@@ -104,7 +104,7 @@
 
         .medicine-table {
             border-collapse: collapse;
-            
+
             width: 550px;
             max-width: auto;
             margin-left: 40px;
@@ -137,13 +137,13 @@
 
         #medicine_rule_days {
             font-size: 15px;
-          
+
         }
 
         #medicine_name {
             font-size: 20px;
-         font-weight: 530;
-          
+            font-weight: 530;
+
 
         }
 
@@ -152,22 +152,23 @@
             font-size: 14px;
             width: 300px;
             max-width: 300px;
-           
+
         }
-        sub{
+
+        sub {
             font-size: 15px;
         }
-        .rx{
+
+        .rx {
             margin-top: 12px;
             margin-left: 15px;
-            height:10px;
+            height: 10px;
             font-weight: larger;
             font-size: 25px;
-            color:#1a213fe2;
+            color: #1a213fe2;
 
-           
+
         }
-
     </style>
 </head>
 
@@ -200,14 +201,17 @@
 
     <div class="details">
         <p>
-            <strong>ID:</strong>
+            <strong>ID :</strong>
             <%= id %>
-                <strong>Patient Name:</strong>
+                <strong>Patient Name :</strong>
                 <%= patientName %>
-                    <strong>Patient Age:</strong>
-                    <%= patientAge %> years
-                        <strong>Date:</strong>
-                        <%= generatedOn %>
+                    <strong>Patient Age :</strong>
+                    <%= PatientAge %> years
+                        <strong> Sex :</strong>
+                        <%= sex %>
+                            <strong>Date :</strong>
+                            <%= generatedOn %>
+
         </p>
     </div>
     <div class="Main">
@@ -265,8 +269,8 @@
         </div>
         <div class="Medicine_Info">
             <table class="medicine-table">
-                   <p class="rx"><b>R<sub>x</sub></b></p>
-                        <% medicines.forEach((medicine)=> { %>
+                <p class="rx"><b>R<sub>x</sub></b></p>
+                <% medicines.forEach((medicine)=> { %>
                     <tr id="medicine_name">
                         <td colspan="2">
                             <%= medicine.name %>
@@ -279,16 +283,16 @@
                         </td>
                         <td>
                             <%= medicine.days %>
-                            
-                        </td>
-                        
-                    </tr>
-                 
-                    <% }) %>
-                   
 
-                </tbody>
-                
+                        </td>
+
+                    </tr>
+
+                    <% }) %>
+
+
+                        </tbody>
+
             </table>
             <!-- <p id="signature">
                 ................<br><strong>Signature</strong></p> -->

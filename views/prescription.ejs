@@ -107,29 +107,55 @@
             <h2 class="text-center mb-4">Prescription Form</h2>
             <form action="/add-prescription" method="post">
                 <div class="row mb-3">
+
+
+
                     <div class="col-md-6 form-group">
                         <label for="id">ID:</label>
-                        <input type="text" id="id" name="id" class="form-control" placeholder="Enter ID" required>
+                        <input type="text" id="id" name="id" class="form-control" placeholder="Enter ID" required
+                            onkeyup="fetchPatientInfo(this.value)">
                     </div>
                     <div class="col-md-6 form-group">
                         <label for="patientName">Patient Name:</label>
                         <input type="text" id="patientName" name="patientName" class="form-control"
-                            placeholder="Enter patient name" required>
+                            placeholder="Patient name" readonly>
                     </div>
+
+                    <div class="col-md-6 form-group">
+                        <label for="PatientAge">Age:</label>
+                        <input type="number" id="PatientAge" name="PatientAge" class="form-control"
+                            placeholder="Patient age" readonly>
+                    </div>
+
+
+                    <div class="col-md-6 form-group">
+                        <label for="sex">Gender:</label>
+                        <input type="text" id="sex" name="sex" class="form-control" placeholder="Gender" readonly>
+                    </div>
+
+
                 </div>
 
                 <div class="row mb-3">
                     <div class="col-md-6 form-group">
-                        <label for="patientAge">Patient Age:</label>
-                        <input type="number" id="patientAge" name="patientAge" class="form-control"
-                            placeholder="Enter patient age">
+                        <label for="patientAddress">Patient Address:</label>
+                        <input type="text" id="patientAddress" name="patientAddress" class="form-control"
+                            placeholder="Patient address" readonly>
                     </div>
+
+
                     <div class="col-md-6 form-group">
                         <label for="cc">Chief Complaints:</label>
                         <input type="text" id="cc" name="cc" class="form-control" placeholder="Chief complaints"
                             required>
                     </div>
                 </div>
+
+
+
+
+
+
 
                 <div class="form-group mb-4">
                     <label>On Examinations:</label>
@@ -206,16 +232,22 @@
                                         <option value="০+১+০(খাওয়ার আগে)">০+১+০(খাওয়ার আগে)</option>
                                         <option value="১+০+০(খাওয়ার পর)">১+০+০(খাওয়ার পর)</option>
                                         <option value="১+০+০(খাওয়ার আগে)">১+০+০(খাওয়ার আগে)</option>
-                                        <option value="১+১+১+১ খাওয়ার পর ( ৬ ঘন্টা পর পর)">১+১+১+১ খাওয়ার পর ( ৬ ঘন্টা পর পর)</option>
-                                        <option value=".....চামুচ করে দিনে......বার">.....চামুচ করে দিনে......বার</option>
+                                        <option value="১+১+১+১ খাওয়ার পর ( ৬ ঘন্টা পর পর)">১+১+১+১ খাওয়ার পর ( ৬ ঘন্টা
+                                            পর পর)</option>
+                                        <option value=".....চামুচ করে দিনে......বার">.....চামুচ করে দিনে......বার
+                                        </option>
                                         <option value="১ম দিন ১ টি ৭দিন পর ১ টি">১ম দিন ১ টি ৭দিন পর ১ টি</option>
-                                        <option value=".....ফোটা করে দিনে......বার">.....ফোটা করে দিনে......বার </option>
-                                        <option value="আক্রান্ত স্থানে ব্যবহার করতে হবে...........">আক্রান্ত স্থানে ব্যবহার করতে হবে...........</option>
-                                        <option value="১০২° জ্বর বা তার বেশি থাকলে ৬ ঘন্টা পর পর ১ টি করে মলদারে দিতে হবে">১০২° জ্বর বা তার বেশি থাকলে ৬ ঘন্টা
+                                        <option value=".....ফোটা করে দিনে......বার">.....ফোটা করে দিনে......বার
+                                        </option>
+                                        <option value="আক্রান্ত স্থানে ব্যবহার করতে হবে...........">আক্রান্ত স্থানে
+                                            ব্যবহার করতে হবে...........</option>
+                                        <option
+                                            value="১০২° জ্বর বা তার বেশি থাকলে ৬ ঘন্টা পর পর ১ টি করে মলদারে দিতে হবে">
+                                            ১০২° জ্বর বা তার বেশি থাকলে ৬ ঘন্টা
                                             পর পর ১ টি করে মলদারে দিতে হবে</option>
                                         <option value="চাপ করে দিনে ...... বার">চাপ করে দিনে ...... বার</option>
-                                        
-                                       
+
+
 
 
                                     </select>
@@ -336,6 +368,38 @@
             input.value = brandName;
             item.closest('.search-results').innerHTML = '';
         }
+
+        async function fetchPatientInfo(patientId) {
+            if (patientId.length < 3) {
+                document.getElementById('patientName').value = '';
+                document.getElementById('patientAddress').value = '';
+                document.getElementById('PatientAge').value = '';
+                document.getElementById('sex').value = '';
+
+                return;
+            }
+
+            try {
+                const response = await fetch(`/get-patient-info?id=${patientId}`);
+                const patient = await response.json();
+
+                if (patient) {
+                    document.getElementById('patientName').value = patient.name || '';
+                    document.getElementById('patientAddress').value = patient.address || '';
+                    document.getElementById('PatientAge').value = patient.Age || ''; 
+                    document.getElementById('sex').value = patient.Sex || ''; 
+                } else {
+                    document.getElementById('patientName').value = '';
+                    document.getElementById('patientAddress').value = '';
+                    document.getElementById('PatientAge').value = '';
+                    document.getElementById('sex').value = '';
+                }
+            } catch (error) {
+                console.error('Error fetching patient info:', error);
+            }
+        }
+
+
     </script>
 </body>
 

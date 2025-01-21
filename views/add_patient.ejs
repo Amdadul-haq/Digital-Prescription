@@ -95,30 +95,53 @@
                                     placeholder="Enter Patient name" required>
                             </div>
                             <div class="mb-3">
-                                <label for="Patinet_address" class="form-label">Address:</label>
-                                <input type="text" id="Patinet_address" name="Patinet_address" class="form-control"
-                                    placeholder="Enter Address" required>
+                                <label for="Patient_address" class="form-label">Address:</label>
+                                <input type="text" id="Patient_address" name="Patient_address" class="form-control"
+                                    placeholder="Enter Address">
                             </div>
                             <div class="mb-3">
-                                <label for="gender" class="form-label">Gender:</label>
-                                <input type="text" id="gender" name="gender" class="form-control"
-                                    placeholder="Enter gender" required>
+                                <label for="Patient_age" class="form-label">Age:</label>
+                                <input type="number" id="Patient_age" name="Patient_age" class="form-control"
+                                    placeholder="Enter Age" required>
                             </div>
+                            <div class="mb-3">
+                                <label class="form-label">Gender:</label>
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <input type="radio" id="male" name="gender" value="Male" required>
+                                        <label for="male">Male</label>
+                                    </div>
+                                    <div>
+                                        <input type="radio" id="female" name="gender" value="Female" required>
+                                        <label for="female">Female</label>
+                                    </div>
+                                    <div>
+                                        <input type="radio" id="other" name="gender" value="Other" required>
+                                        <label for="other">Other</label>
+                                    </div>
+                                </div>
+                            </div>
+
+
                             <div class="mb-3">
                                 <label for="Patient_mobile" class="form-label">Mobile Number:</label>
                                 <input type="text" id="Patient_mobile" name="Patient_mobile" class="form-control"
                                     placeholder="Enter mobile number" required>
+                                <div id="mobileError" class="text-danger mt-1" style="display: none;font-size: 0.60rem;">Invalid
+                                    Bangladeshi mobile number (e.g.,
+                                    017XXXXXXXX).</div>
                             </div>
+
                             <div class="mb-3">
-                                <label for="pid" class="form-label">Patient ID:</label>
+                                <!-- <label for="pid" class="form-label">Patient ID:</label>
                                 <input type="text" id="pid" name="pid" class="form-control"
                                     placeholder="Enter Patient ID" required>
-                            </div>
-                            <div class="d-flex justify-content-between">
-                                <button type="submit" class="btn btn-primary">Add Patient</button>
-                                <button type="button" class="btn btn-secondary"
-                                    onclick="window.location.href='/home'">Back</button>
-                            </div>
+                            </div> -->
+                                <div class="d-flex justify-content-between">
+                                    <button type="submit" class="btn btn-primary">Add Patient</button>
+                                    <button type="button" class="btn btn-secondary"
+                                        onclick="window.location.href='/home'">Back</button>
+                                </div>
                         </form>
                     </div>
                 </div>
@@ -134,6 +157,31 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const mobileInput = document.getElementById("Patient_mobile");
+            const mobileError = document.getElementById("mobileError");
+
+            // Function to validate Bangladeshi mobile number
+            function validateBangladeshiMobile(number) {
+                const regex = /^(?:\+88|88)?01[3-9]\d{8}$/;  // Bangladesh mobile number format
+                return regex.test(number);
+            }
+
+            // Event listener to check input validity in real-time
+            mobileInput.addEventListener("input", function () {
+                if (!validateBangladeshiMobile(mobileInput.value)) {
+                    mobileInput.classList.add("is-invalid");
+                    mobileError.style.display = "block";
+                } else {
+                    mobileInput.classList.remove("is-invalid");
+                    mobileError.style.display = "none";
+                }
+            });
+        });
+    </script>
+
     <script>
         const errorMessage = "<%= errorMessage || '' %>";
         const successMessage = "<%= successMessage || '' %>";

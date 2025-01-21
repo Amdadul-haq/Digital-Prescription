@@ -45,11 +45,13 @@ const LoginSchema = new mongoose.Schema({
 
 const AddPatientSchema = new mongoose.Schema({
     Patient_name: { type: String, required: true },
-    Patinet_address: { type: String, required: true },
+    Patient_address: { type: String},
+    Patient_age: { type:String, required: true },
     gender: { type: String, required: true },
-    Patient_mobile: { type: String, required: true },
-    pid: { type: String, required: true }
-}, { versionKey: false }); 
+    Patient_mobile: { type: String, required: true, unique: true },  // Added unique constraint
+    pid: { type: String, required: true, unique: true },
+}, { versionKey: false });
+
 
 const MedicineSchema = new mongoose.Schema({
     "brandName": { type: String, required: true },
@@ -62,7 +64,7 @@ const MedicineSchema = new mongoose.Schema({
 
 // Create a model for the Medicine_names collection
 const Medicine = new mongoose.model('Medicine_names', MedicineSchema);
-const Patients = new mongoose.model('Patients_Info', AddPatientSchema)
+const Patients = new mongoose.model('Patients_Info', AddPatientSchema);
 
 
 // Creating a mongoose model based on the schema for the 'Users' collection

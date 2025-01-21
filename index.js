@@ -219,26 +219,77 @@ app.post('/add-medicine', async (req, res) => {
 });
 
 
+app.get('/get-patient-info', async (req, res) => {
+  const { id } = req.query;
+  try {
+    const patient = await Patients.findOne({ pid: id });
+
+    if (patient) {
+      res.json({
+        name: patient.Patient_name || '',
+        address: patient.Patient_address|| '',
+        Age: patient.Patient_age || '',
+        Sex: patient.gender || ''
+      });
+    } else {
+      res.json(null);
+    }
+  } catch (err) {
+    res.status(500).send('Error retrieving patient info');
+  }
+});
+
+
 app.post('/add-patient', async (req, res) => {
-  const { Patient_name, Patinet_address, gender, Patient_mobile, pid } = req.body;
+  const { Patient_name, Patient_address, Patient_age, gender, Patient_mobile } = req.body;
+
+  const generateUniquePid = async () => {
+    let unique = false;
+    let pid;
+    while (!unique) {
+      pid = Math.floor(100000 + Math.random() * 900000).toString(); // Generate 6-digit number
+      const existingPatient = await Patients.findOne({ pid: pid });
+      if (!existingPatient) {
+        unique = true;
+      }
+    }
+    return pid;
+  };
+
+
+
 
   try {
-    const existingPatient = await Patients.findOne({ pid: pid });
+    // Check if mobile number already exists
+    const existingPatient = await Patients.findOne({ Patient_mobile: Patient_mobile });
     if (existingPatient) {
-      return res.render("add_patient", { successMessage: '', errorMessage: "Patient Id  already exists!", username: req.session.username });
-      // Create a new instance of the Patients model
-    } else {
-      const newPatient = new Patients({ Patient_name, Patinet_address, gender, Patient_mobile, pid });
-
-      // Save the new patient to the database
-      await newPatient.save();
-
-      res.render('add_patient', {
-        username: req.session.username,
-        errorMessage: '',
-        successMessage: 'Patients details are successfully added!'
+      return res.render("add_patient", {
+        successMessage: '',
+        errorMessage: "Mobile number already exists!",
+        username: req.session.username
       });
     }
+
+    const pid = await generateUniquePid();
+
+    const newPatient = new Patients({ 
+      Patient_name, 
+      Patient_address,
+      Patient_age, 
+      gender, 
+      Patient_mobile, 
+      pid 
+    });
+
+    // Save the new patient to the database
+    await newPatient.save();
+
+    res.render('add_patient', {
+      username: req.session.username,
+      errorMessage: '',
+      successMessage: 'Patient details are successfully added!'
+    });
+
   } catch (error) {
     console.error('Error saving patient details to the database:', error);
     res.render('add_patient', {
@@ -254,7 +305,8 @@ app.post("/add-prescription", async (req, res) => {
   const {
     id,
     patientName,
-    patientAge,
+    PatientAge,
+    sex,
     diagonosis,
     history,
     cc,
@@ -265,10 +317,6 @@ app.post("/add-prescription", async (req, res) => {
     test,
     nextVisitDate
   } = req.body;
-
-
-
-  const { username, qualification, address, mobileNumber } = req.session;
 
   try {
     // Ensure these fields are always arrays
@@ -290,14 +338,11 @@ app.post("/add-prescription", async (req, res) => {
     // Render EJS template with data
     const templatePath = path.join(__dirname,'views', 'template.ejs');
     const htmlContent = await ejs.renderFile(templatePath, {
-      // doctorName: username,
       id,
-      // qualification,
-      // address,
-      // mobileNumber,
       patientName,
-      patientAge,
+      PatientAge,
       historyList,
+      sex,
       testList,
       diagnosis: diagonosis,
       medicines,
