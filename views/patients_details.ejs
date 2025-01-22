@@ -21,37 +21,54 @@
         td {
             text-align: left;
             padding: 10px;
+            
         }
 
         th {
-            background-color: #007bff;
+            background-color: #4185ce;
             color: white;
         }
 
-        tr:nth-child(odd) {
-            background-color: #f9f9f9;
-        }
+      table tr:nth-child(odd) {
+    background-color: hsl(0, 0%, 100%);
+    font-size: 13px;
+}
 
-        tr:nth-child(even) {
-            background-color: #e9ecef;
-        }
+table tr:nth-child(even) {
+    background-color: #e8eae8fb;
+    font-size: 13px;
+}
+
 
         .pagination-container {
             display: flex;
             justify-content: center;
             margin-top: 20px;
         }
+        .Goback{
+            font-size: 12px;
+            background-color: #12b14f;
+            border-radius: 10px;
+            color: #f8f9fa;
+            margin-bottom: 20px;
+        }
+        h2{
+            text-align: center;
+            font-size: 30px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
     </style>
 </head>
 
 <body>
     <div class="container">
     <div class="container mt-4">
-        <div class="d-flex justify-content-between align-items-center">
+        <div>
             <h2>Patient Details</h2>
             <!-- Add the Back button -->
-            <button class="btn btn-secondary" onclick="window.location.href='/prescription'">Back</button>
         </div>
+                    <button class="Goback" onclick="window.location.href='/prescription'">Go Back to Presciption Page</button>
     </div>
 
         <!-- Search Bar -->
@@ -65,10 +82,10 @@
 
         <!-- Responsive Table -->
         <div class="table-responsive">
-            <table class="table table-bordered">
+            <table>
                 <thead>
                     <tr>
-                        <th>#</th>
+                        <th>SL</th>
                         <th>Name</th>
                         <th>Address</th>
                         <th>Age</th>
