@@ -98,41 +98,50 @@
                         <th>Gender</th>
                         <th>Mobile</th>
                         <th>PID</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <% if (patients.length> 0) { %>
-                        <% patients.forEach((patient, index)=> { %>
-                            <tr>
-                                <td>
-                                    <%= (currentPage - 1) * 20 + index + 1 %>
-                                </td>
-                                <td>
-                                    <%= patient.Patient_name %>
-                                </td>
-                                <td>
-                                    <%= patient.Patient_address || "N/A" %>
-                                </td>
-                                <td>
-                                    <%= patient.Patient_age %>
-                                </td>
-                                <td>
-                                    <%= patient.gender %>
-                                </td>
-                                <td>
-                                    <%= patient.Patient_mobile %>
-                                </td>
-                                <td>
-                                    <%= patient.pid %>
-                                </td>
-                            </tr>
-                            <% }) %>
-                                <% } else { %>
-                                    <tr>
-                                        <td colspan="7" class="text-center">No results found</td>
-                                    </tr>
-                                    <% } %>
-                </tbody>
+            <tbody>
+                <% if (patients.length> 0) { %>
+                    <% patients.forEach((patient, index)=> { %>
+                        <tr>
+                            <td>
+                                <%= (currentPage - 1) * 20 + index + 1 %>
+                            </td>
+                            <td>
+                                <%= patient.Patient_name %>
+                            </td>
+                            <td>
+                                <%= patient.Patient_address || "N/A" %>
+                            </td>
+                            <td>
+                                <%= patient.Patient_age %>
+                            </td>
+                            <td>
+                                <%= patient.gender %>
+                            </td>
+                            <td>
+                                <%= patient.Patient_mobile %>
+                            </td>
+                            <td>
+                                <%= patient.pid %>
+                            </td>
+                            <td>
+                                <button class="btn btn-warning btn-sm"
+                                    onclick="openUpdatePopup('<%= patient._id %>', '<%= patient.Patient_name %>', '<%= patient.Patient_address %>', '<%= patient.Patient_age %>', '<%= patient.gender %>', '<%= patient.Patient_mobile %>')">
+                                    Update
+                                </button>
+                                <button class="btn btn-danger btn-sm" onclick="confirmDelete('<%= patient._id %>')">Delete</button>
+                            </td>
+                        </tr>
+                        <% }) %>
+                            <% } else { %>
+                                <tr>
+                                    <td colspan="8" class="text-center">No results found</td>
+                                </tr>
+                                <% } %>
+            </tbody>
+
             </table>
         </div>
 
@@ -149,6 +158,73 @@
             </ul>
         </nav>
     </div>
+
+
+    <div id="updateModal"
+       style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #fff; padding: 20px; border-radius: 10px;box-shadow: 0px 0px 10px #000;z-index: 9999;">
+        <h4>Update Patient Details</h4>
+        <form action="/update-patient" method="POST">
+            <input type="hidden" id="updatePatientId" name="id">
+    
+            <label>Name:</label>
+            <input type="text" id="updatePatientName" name="Patient_name" class="form-control" required>
+    
+            <label>Address:</label>
+            <input type="text" id="updatePatientAddress" name="Patient_address" class="form-control">
+    
+            <label>Age:</label>
+            <input type="number" id="updatePatientAge" name="Patient_age" class="form-control">
+    
+            <label>Gender:</label>
+            <select id="updatePatientGender" name="gender" class="form-control">
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+            </select>
+    
+            <label>Mobile:</label>
+            <input type="text" id="updatePatientMobile" name="Patient_mobile" class="form-control" required>
+    
+            <br>
+            <button type="submit" class="btn btn-primary">Update</button>
+            <button type="button" class="btn btn-secondary" onclick="closePopup()">Cancel</button>
+        </form>
+    </div>
+<script>
+    function confirmDelete(patientId) {
+        if (confirm("Are you sure you want to delete this patient?")) {
+            fetch(`/delete-patient/${patientId}`, { method: 'DELETE' })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert("Deleted successfully");
+                        location.reload(); // Reload page to update list
+                    } else {
+                        alert("Failed to delete patient");
+                    }
+                })
+                .catch(err => {
+                    alert("Error deleting patient");
+                });
+        }
+    }
+
+    function openUpdatePopup(id, name, address, age, gender, mobile) {
+        document.getElementById('updatePatientId').value = id;
+        document.getElementById('updatePatientName').value = name;
+        document.getElementById('updatePatientAddress').value = address;
+        document.getElementById('updatePatientAge').value = age;
+        document.getElementById('updatePatientGender').value = gender;
+        document.getElementById('updatePatientMobile').value = mobile;
+
+        // Show the popup
+        document.getElementById('updateModal').style.display = 'block';
+    }
+
+    function closePopup() {
+        document.getElementById('updateModal').style.display = 'none';
+    }
+</script>
+
 </body>
 
 </html>

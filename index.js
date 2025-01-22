@@ -443,6 +443,38 @@ app.post("/add-prescription",isAuthenticated, async (req, res) => {
 });
 
 
+
+app.delete('/delete-patient/:id', async (req, res) => {
+  try {
+    const result = await Patients.deleteOne({ _id: req.params.id, addedBy: req.session.userId });
+    if (result.deletedCount > 0) {
+      res.json({ success: true });
+    } else {
+      res.json({ success: false });
+    }
+  } catch (error) {
+    console.error('Error deleting patient:', error);
+    res.status(500).json({ success: false });
+  }
+});
+
+app.post('/update-patient', async (req, res) => {
+  const { id, Patient_name, Patient_address, Patient_age, gender, Patient_mobile } = req.body;
+  try {
+    await Patients.updateOne(
+      { _id: id, addedBy: req.session.userId },
+      { $set: { Patient_name, Patient_address, Patient_age, gender, Patient_mobile } }
+    );
+    res.redirect('/patient-details');
+  } catch (error) {
+    console.error('Error updating patient:', error);
+    res.status(500).send("Failed to update patient");
+  }
+});
+
+
+
+
 // Start Server
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
