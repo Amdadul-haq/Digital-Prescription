@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Patient Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        body {
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 10px;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        tr:nth-child(odd) {
+            background-color: #f9f9f9;
+        }
+
+        tr:nth-child(even) {
+            background-color: #e9ecef;
+        }
+
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center">
+            <h2>Patient Details</h2>
+            <!-- Add the Back button -->
+            <button class="btn btn-secondary" onclick="window.location.href='/add-medicine'">Back</button>
+        </div>
+    </div>
+
+        <!-- Search Bar -->
+        <form action="/search-patient" method="get" class="mb-3">
+            <div class="input-group">
+                <input type="text" name="query" class="form-control" placeholder="Search by Name, Mobile, or ID"
+                    value="<%= searchQuery || '' %>" />
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </form>
+
+        <!-- Responsive Table -->
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Address</th>
+                        <th>Age</th>
+                        <th>Gender</th>
+                        <th>Mobile</th>
+                        <th>PID</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (patients.length> 0) { %>
+                        <% patients.forEach((patient, index)=> { %>
+                            <tr>
+                                <td>
+                                    <%= (currentPage - 1) * 20 + index + 1 %>
+                                </td>
+                                <td>
+                                    <%= patient.Patient_name %>
+                                </td>
+                                <td>
+                                    <%= patient.Patient_address || "N/A" %>
+                                </td>
+                                <td>
+                                    <%= patient.Patient_age %>
+                                </td>
+                                <td>
+                                    <%= patient.gender %>
+                                </td>
+                                <td>
+                                    <%= patient.Patient_mobile %>
+                                </td>
+                                <td>
+                                    <%= patient.pid %>
+                                </td>
+                            </tr>
+                            <% }) %>
+                                <% } else { %>
+                                    <tr>
+                                        <td colspan="7" class="text-center">No results found</td>
+                                    </tr>
+                                    <% } %>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <nav class="pagination-container">
+            <ul class="pagination">
+                <% for (let i=1; i <=totalPages; i++) { %>
+                    <li class="page-item <%= i === currentPage ? 'active' : '' %>">
+                        <a class="page-link" href="/search-patient?page=<%= i %>&query=<%= searchQuery || '' %>">
+                            <%= i %>
+                        </a>
+                    </li>
+                    <% } %>
+            </ul>
+        </nav>
+    </div>
+</body>
+
+</html>

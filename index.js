@@ -300,6 +300,71 @@ app.post('/add-patient', async (req, res) => {
   }
 });
 
+app.get("/patient-details", async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = 20;
+    const skip = (page - 1) * limit;
+
+    const patients = await Patients.find()
+      .skip(skip)
+      .limit(limit)
+      .sort({ Patient_name: 1 });
+
+    const totalPatients = await Patients.countDocuments();
+    const totalPages = Math.ceil(totalPatients / limit);
+
+    res.render("patients_details", {
+      patients,
+      totalPages,
+      currentPage: page,
+      searchQuery: "", // Default empty query for patient-details route
+    });
+  } catch (error) {
+    console.error("Error fetching patient details:", error);
+    res.status(500).send("Server Error");
+  }
+});
+
+
+app.get("/search-patient", async (req, res) => {
+  try {
+    const { query } = req.query; // Search query
+    const page = parseInt(req.query.page) || 1;
+    const limit = 20; // Number of patients per page
+    const skip = (page - 1) * limit;
+
+    // Search criteria
+    const searchCriteria = query
+      ? {
+        $or: [
+          { Patient_name: { $regex: query, $options: "i" } }, // Case-insensitive search
+          { Patient_mobile: { $regex: query, $options: "i" } },
+          { pid: { $regex: query, $options: "i" } }
+        ]
+      }
+      : {};
+
+    // Fetch patients
+    const patients = await Patients.find(searchCriteria)
+      .skip(skip)
+      .limit(limit);
+
+    const totalPatients = await Patients.countDocuments(searchCriteria);
+    const totalPages = Math.ceil(totalPatients / limit);
+
+    res.render("patients_details", {
+      patients,
+      totalPages,
+      currentPage: page,
+      searchQuery: query || "", // Pass searchQuery to the template
+    });
+  } catch (error) {
+    console.error("Error searching patients:", error);
+    res.status(500).send("Server Error");
+  }
+});
+
 
 app.post("/add-prescription", async (req, res) => {
   const {
