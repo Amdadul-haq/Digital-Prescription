@@ -50,6 +50,31 @@
         .toast.show {
             display: block;
         }
+          .Goback {
+            font-size: 12px;
+            background-color: #12b14f;
+            border-radius: 5px;
+            color: #f8f9fa;
+            margin-bottom: 20px;
+           padding: 6px 12px;
+        }
+        .Goback:hover{
+            background-color: #05ef47;
+            color: black;
+        }
+        .backbtn{
+                font-size: 12px;
+            background-color: #367272;
+            border-radius: 5px;
+            color: #f8f9fa;
+            margin-bottom: 20px;
+           padding: 6px 12px;
+
+        }
+        .backbtn:hover{
+            background-color:#21e4e4;
+            color: black;
+        }
     </style>
 </head>
 
@@ -135,11 +160,11 @@
                             <div class="mb-3">
                             
                                 <div class="d-flex justify-content-between">
-                                    <button type="submit" class="btn btn-primary">Add Patient</button>
-                                    <button type="button" class="btn btn-primary" onclick="window.location.href='/patient-details'">See patient
+                                    <button type="submit" class="Goback">Add Patient</button>
+                                    <button type="button" class="Goback" onclick="window.location.href='/patient-details'">See patient
                                         details</button>
 
-                                    <button type="button" class="btn btn-secondary"
+                                    <button type="button" class="backbtn"
                                         onclick="window.location.href='/home'">Back</button>
                                 </div>
                         </form>

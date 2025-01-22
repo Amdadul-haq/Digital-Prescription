@@ -15,13 +15,14 @@
         table {
             width: 100%;
             border-collapse: collapse;
-        }
+            border: 1px solid #0e55f0;
 
+        }
         th,
         td {
-            text-align: left;
+            text-align: center;
             padding: 10px;
-            
+
         }
 
         th {
@@ -29,47 +30,52 @@
             color: white;
         }
 
-      table tr:nth-child(odd) {
-    background-color: hsl(0, 0%, 100%);
-    font-size: 13px;
-}
+        table tr:nth-child(odd) {
+            background-color: hsl(0, 0%, 100%);
+            font-size: 13px;
+         
+        }
 
-table tr:nth-child(even) {
-    background-color: #e8eae8fb;
-    font-size: 13px;
-}
+        table tr:nth-child(even) {
+            background-color: #e8eae8fb;
+            font-size: 13px;
+        }
 
 
         .pagination-container {
             display: flex;
             justify-content: center;
-            margin-top: 20px;
+            margin-top: 25px;
         }
-        .Goback{
+
+        .Goback {
             font-size: 12px;
             background-color: #12b14f;
-            border-radius: 10px;
+            border-radius: 5px;
             color: #f8f9fa;
             margin-bottom: 20px;
+           padding: 6px 12px;
         }
-        h2{
+
+        h2 {
             text-align: center;
             font-size: 30px;
             font-family: Arial, Helvetica, sans-serif;
+            margin-bottom: 60px;
+            
         }
-
     </style>
 </head>
 
 <body>
     <div class="container">
-    <div class="container mt-4">
-        <div>
-            <h2>Patient Details</h2>
-            <!-- Add the Back button -->
+        <div class="container mt-4">
+            <div>
+                <h2>Patient Details</h2>
+                <!-- Add the Back button -->
+            </div>
+            <button class="Goback" onclick="window.location.href='/prescription'">Go Back to Presciption Page</button>
         </div>
-                    <button class="Goback" onclick="window.location.href='/prescription'">Go Back to Presciption Page</button>
-    </div>
 
         <!-- Search Bar -->
         <form action="/search-patient" method="get" class="mb-3">
