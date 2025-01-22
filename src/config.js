@@ -43,14 +43,27 @@ const LoginSchema = new mongoose.Schema({
     }
 }, { versionKey: false });
 
+// const AddPatientSchema = new mongoose.Schema({
+//     Patient_name: { type: String, required: true },
+//     Patient_address: { type: String},
+//     Patient_age: { type:String, required: true },
+//     gender: { type: String, required: true },
+//     Patient_mobile: { type: String, required: true, unique: true },  // Added unique constraint
+//     pid: { type: String, required: true, unique: true },
+// }, { versionKey: false });
+
+
 const AddPatientSchema = new mongoose.Schema({
     Patient_name: { type: String, required: true },
-    Patient_address: { type: String},
-    Patient_age: { type:String, required: true },
+    Patient_address: { type: String },
+    Patient_age: { type: Number, required: true },
     gender: { type: String, required: true },
-    Patient_mobile: { type: String, required: true, unique: true },  // Added unique constraint
+    Patient_mobile: { type: String, required: true, unique: true },
     pid: { type: String, required: true, unique: true },
+    addedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'Users', required: true }  // Added user reference
 }, { versionKey: false });
+
+
 
 
 const MedicineSchema = new mongoose.Schema({

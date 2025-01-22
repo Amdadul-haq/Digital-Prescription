@@ -3,42 +3,49 @@ const bcryptjs = require('bcryptjs');
 const { collection, Medicine, Patients } = require("./src/config");
 const path = require('path');
 const session = require('express-session');
+const rateLimit = require('express-rate-limit');
 const puppeteer = require('puppeteer');
 const ejs = require('ejs');
 require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware to parse JSON and URL-encoded bodies
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-// Configure session middleware
+app.use(express.urlencoded({ extended: true }));
+
 app.use(session({
   secret: 'your-secret-key', // Replace with a secure key
   resave: false,
   saveUninitialized: true,
 }));
 
-// Set EJS as the view engine
+// Define isAuthenticated middleware before routes
+function isAuthenticated(req, res, next) {
+  if (req.session.userId) {
+    return next();  // Proceed to the next middleware or route
+  } else {
+    res.redirect('/');  // Redirect if not authenticated
+  }
+}
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,  // 15 minutes
+  max: 5,  // Limit each IP to 5 login attempts
+  message: 'Too many login attempts. Please try again later.'
+});
+
 app.set('view engine', 'ejs');
 
-
-// Serve static files
 app.use(express.static(path.join(__dirname, "public")));
 
-// Route: Login Page
 app.get('/', (req, res) => {
   res.render('login', { errorMessage: '', successMessage: '' });
 });
 
-// Route: Signup Page
 app.get('/signup', (req, res) => {
   res.render('signup', { errorMessage: '' });
 });
 
-// Route: Home Page
-// Route: Home Page
-app.get('/home', (req, res) => {
+app.get('/home',isAuthenticated, (req, res) => {
   if (!req.session.username) {
     return res.redirect('/'); // Redirect to login if not logged in
   }
@@ -46,19 +53,15 @@ app.get('/home', (req, res) => {
 });
 
 
-// Route: Add Medicine Page
-app.get('/add-medicine', (req, res) => {
+app.get('/add-medicine', isAuthenticated,(req, res) => {
   res.render('add_medicine', { username: req.session.username, errorMessage: '', successMessage: '' });
 });
 
-app.get('/add-patient', (req, res) => {
+app.get('/add-patient',isAuthenticated, (req, res) => {
   res.render('add_patient', { username: req.session.username, errorMessage: '', successMessage: '' });
 });
 
-
-
-// Route: Prescription Page
-app.get('/prescription', async (req, res) => {
+app.get('/prescription',isAuthenticated, async (req, res) => {
 
   res.render('prescription', {
     username: req.session.username,
@@ -68,8 +71,7 @@ app.get('/prescription', async (req, res) => {
 
 });
 
-
-app.get('/medicines/search', async (req, res) => {
+app.get('/medicines/search',isAuthenticated, async (req, res) => {
   const { brandName, page = 1, limit = 10 } = req.query;
 
   try {
@@ -90,9 +92,7 @@ app.get('/medicines/search', async (req, res) => {
   }
 });
 
-
-
-app.get('/search-medicine', async (req, res) => {
+app.get('/search-medicine', isAuthenticated,async (req, res) => {
   const query = req.query.query;
   try {
     const medicines = await Medicine.find({ "brandName": { $regex: query, $options: 'i' } })
@@ -113,14 +113,12 @@ app.get('/search-medicine', async (req, res) => {
   }
 });
 
-
-// Route: Logout
-app.get('/logout', (req, res) => {
-  res.redirect('/'); // Redirect to login page
+app.get("/logout", (req, res) => {
+  req.session.destroy(() => {
+    res.redirect('/');
+  });
 });
 
-
-// Handle Signup
 app.post("/signup", async (req, res) => {
   const { fullname, username, qualification, address, mobileNumber, password } = req.body;
 
@@ -143,8 +141,7 @@ app.post("/signup", async (req, res) => {
 
 });
 
-// Handle Login
-app.post('/login', async (req, res) => {
+app.post('/login', loginLimiter,async (req, res) => {
   const { username, password } = req.body;
 
   try {
@@ -155,6 +152,7 @@ app.post('/login', async (req, res) => {
 
     const isMatch = await bcryptjs.compare(password, user.password);
     if (isMatch) {
+      req.session.userId = user._id; 
       req.session.username = user.fullname; // Store username in session
       req.session.qualification = user.qualification;
       req.session.address = user.address;
@@ -172,7 +170,7 @@ app.post('/login', async (req, res) => {
   }
 });
 
-app.post('/add-medicine', async (req, res) => {
+app.post('/add-medicine',isAuthenticated, async (req, res) => {
   const {
     brandName,
     dosageForm,
@@ -218,16 +216,15 @@ app.post('/add-medicine', async (req, res) => {
   }
 });
 
-
-app.get('/get-patient-info', async (req, res) => {
+app.get('/get-patient-info',isAuthenticated, async (req, res) => {
   const { id } = req.query;
   try {
-    const patient = await Patients.findOne({ pid: id });
+    const patient = await Patients.findOne({ pid: id, addedBy: req.session.userId }); // Restrict access
 
     if (patient) {
       res.json({
         name: patient.Patient_name || '',
-        address: patient.Patient_address|| '',
+        address: patient.Patient_address || '',
         Age: patient.Patient_age || '',
         Sex: patient.gender || ''
       });
@@ -239,15 +236,14 @@ app.get('/get-patient-info', async (req, res) => {
   }
 });
 
-
-app.post('/add-patient', async (req, res) => {
+app.post('/add-patient', isAuthenticated, async (req, res) => {
   const { Patient_name, Patient_address, Patient_age, gender, Patient_mobile } = req.body;
 
   const generateUniquePid = async () => {
     let unique = false;
     let pid;
     while (!unique) {
-      pid = Math.floor(100000 + Math.random() * 900000).toString(); // Generate 6-digit number
+      pid = Math.floor(100000 + Math.random() * 900000).toString();
       const existingPatient = await Patients.findOne({ pid: pid });
       if (!existingPatient) {
         unique = true;
@@ -256,12 +252,12 @@ app.post('/add-patient', async (req, res) => {
     return pid;
   };
 
-
-
-
   try {
-    // Check if mobile number already exists
-    const existingPatient = await Patients.findOne({ Patient_mobile: Patient_mobile });
+    const existingPatient = await Patients.findOne({
+      Patient_mobile,
+      addedBy: req.session.userId  // Ensure the logged-in user only checks their own patients
+    });
+
     if (existingPatient) {
       return res.render("add_patient", {
         successMessage: '',
@@ -270,18 +266,18 @@ app.post('/add-patient', async (req, res) => {
       });
     }
 
-    const pid = await generateUniquePid();
 
-    const newPatient = new Patients({ 
-      Patient_name, 
+    const pid = await generateUniquePid();
+    const newPatient = new Patients({
+      Patient_name,
       Patient_address,
-      Patient_age, 
-      gender, 
-      Patient_mobile, 
-      pid 
+      Patient_age,
+      gender,
+      Patient_mobile,
+      pid,
+      addedBy: req.session.userId  // Store the logged-in user ID
     });
 
-    // Save the new patient to the database
     await newPatient.save();
 
     res.render('add_patient', {
@@ -291,7 +287,7 @@ app.post('/add-patient', async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Error saving patient details to the database:', error);
+    console.error('Error saving patient details:', error);
     res.render('add_patient', {
       errorMessage: 'Failed to add patient. Please try again.',
       successMessage: '',
@@ -300,25 +296,26 @@ app.post('/add-patient', async (req, res) => {
   }
 });
 
-app.get("/patient-details", async (req, res) => {
+
+app.get("/patient-details", isAuthenticated, async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = 20;
     const skip = (page - 1) * limit;
 
-    const patients = await Patients.find()
+    const patients = await Patients.find({ addedBy: req.session.userId }) // Filter by user
       .skip(skip)
       .limit(limit)
       .sort({ Patient_name: 1 });
 
-    const totalPatients = await Patients.countDocuments();
+    const totalPatients = await Patients.countDocuments({ addedBy: req.session.userId });
     const totalPages = Math.ceil(totalPatients / limit);
 
     res.render("patients_details", {
       patients,
       totalPages,
       currentPage: page,
-      searchQuery: "", // Default empty query for patient-details route
+      searchQuery: "",
     });
   } catch (error) {
     console.error("Error fetching patient details:", error);
@@ -326,26 +323,24 @@ app.get("/patient-details", async (req, res) => {
   }
 });
 
-
-app.get("/search-patient", async (req, res) => {
+app.get("/search-patient", isAuthenticated, async (req, res) => {
   try {
-    const { query } = req.query; // Search query
+    const { query } = req.query;
     const page = parseInt(req.query.page) || 1;
-    const limit = 20; // Number of patients per page
+    const limit = 20;
     const skip = (page - 1) * limit;
 
-    // Search criteria
     const searchCriteria = query
       ? {
+        addedBy: req.session.userId,  // Restrict by user
         $or: [
-          { Patient_name: { $regex: query, $options: "i" } }, // Case-insensitive search
+          { Patient_name: { $regex: query, $options: "i" } },
           { Patient_mobile: { $regex: query, $options: "i" } },
           { pid: { $regex: query, $options: "i" } }
         ]
       }
-      : {};
+      : { addedBy: req.session.userId };
 
-    // Fetch patients
     const patients = await Patients.find(searchCriteria)
       .skip(skip)
       .limit(limit);
@@ -357,7 +352,7 @@ app.get("/search-patient", async (req, res) => {
       patients,
       totalPages,
       currentPage: page,
-      searchQuery: query || "", // Pass searchQuery to the template
+      searchQuery: query || "",
     });
   } catch (error) {
     console.error("Error searching patients:", error);
@@ -365,8 +360,7 @@ app.get("/search-patient", async (req, res) => {
   }
 });
 
-
-app.post("/add-prescription", async (req, res) => {
+app.post("/add-prescription",isAuthenticated, async (req, res) => {
   const {
     id,
     patientName,
@@ -447,17 +441,6 @@ app.post("/add-prescription", async (req, res) => {
     res.status(500).send('Error generating PDF');
   }
 });
-
-
-
-
-
-
-
-
-
-
-
 
 
 // Start Server
