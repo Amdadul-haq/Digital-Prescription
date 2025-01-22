@@ -414,7 +414,7 @@ app.post("/add-prescription", async (req, res) => {
       nextVisitDate,
       complaintsList,
       bp, pulse, weight, temperature,
-       generatedOn: new Date().toLocaleString()
+      generatedOn: new Date().toLocaleString()
     });
 
     // Launch Puppeteer and generate PDF
