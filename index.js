@@ -236,6 +236,32 @@ app.get('/get-patient-info',isAuthenticated, async (req, res) => {
   }
 });
 
+app.post('/check-patient-mobile', isAuthenticated, async (req, res) => {
+  const { Patient_mobile } = req.body; // Extract mobile number from the request body
+
+  try {
+    // Search for an existing patient with the same mobile number, scoped to the logged-in user
+    const existingPatient = await Patients.findOne({
+      Patient_mobile,
+      addedBy: req.session.userId // Restrict search to patients added by the logged-in user
+    });
+
+    // If patient exists, return a JSON response with `exists: true`
+    if (existingPatient) {
+      return res.json({ exists: true });
+    }
+
+    // If no patient is found, return a JSON response with `exists: false`
+    res.json({ exists: false });
+  } catch (error) {
+    console.error('Error checking patient mobile:', error);
+
+    // In case of any error, send an error response
+    res.status(500).json({ exists: false, error: 'An error occurred while checking the mobile number.' });
+  }
+});
+
+
 app.post('/add-patient', isAuthenticated, async (req, res) => {
   const { Patient_name, Patient_address, Patient_age, gender, Patient_mobile } = req.body;
 
@@ -253,19 +279,6 @@ app.post('/add-patient', isAuthenticated, async (req, res) => {
   };
 
   try {
-    const existingPatient = await Patients.findOne({
-      Patient_mobile,
-      addedBy: req.session.userId  // Ensure the logged-in user only checks their own patients
-    });
-
-    if (existingPatient) {
-      return res.render("add_patient", {
-        successMessage: '',
-        errorMessage: "Mobile number already exists!",
-        username: req.session.username
-      });
-    }
-
 
     const pid = await generateUniquePid();
     const newPatient = new Patients({

@@ -43,12 +43,10 @@ const AddPatientSchema = new mongoose.Schema({
     Patient_address: { type: String },
     Patient_age: { type: Number, required: true },
     gender: { type: String, required: true },
-    Patient_mobile: { type: String, required: true, unique: true },
+    Patient_mobile: { type:String, required: true,unique:false},
     pid: { type: String, required: true, unique: true },
     addedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'Users', required: true }  // Added user reference
 }, { versionKey: false });
-
-
 
 
 const MedicineSchema = new mongoose.Schema({
