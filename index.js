@@ -51,7 +51,9 @@ app.get('/home',isAuthenticated, (req, res) => {
   }
   res.render('home', { username: req.session.username, successMessage: '', errorMessage:'' });
 });
-
+app.get('/create-report', (req, res) => {
+  res.render('create_report', {username: req.session.username});
+});
 
 app.get('/add-medicine', isAuthenticated,(req, res) => {
   res.render('add_medicine', { username: req.session.username, errorMessage: '', successMessage: '' });
@@ -260,7 +262,6 @@ app.post('/check-patient-mobile', isAuthenticated, async (req, res) => {
     res.status(500).json({ exists: false, error: 'An error occurred while checking the mobile number.' });
   }
 });
-
 
 app.post('/add-patient', isAuthenticated, async (req, res) => {
   const { Patient_name, Patient_address, Patient_age, gender, Patient_mobile } = req.body;
@@ -484,6 +485,75 @@ app.post('/update-patient', async (req, res) => {
     res.status(500).send("Failed to update patient");
   }
 });
+
+
+app.post('/generate-report', async (req, res) => {
+  const {
+    patientId,
+    patientName,
+    patientAge,
+    patientSex,
+    labId,
+    refferedBy,
+    sampleDate,
+    testName,
+    result
+  } = req.body;
+
+  try {
+   
+
+    // Render EJS template with data
+    const templatePath = path.join(__dirname, 'views', 'report_template.ejs');
+    const htmlContent = await ejs.renderFile(templatePath, {
+      patientId,
+      patientName,
+      patientAge,
+      patientSex,
+      labId,
+      refferedBy,
+      sampleDate,
+      testName,
+      result,
+      generatedOn: new Date().toLocaleString()
+    });
+
+    // Launch Puppeteer and generate PDF
+    const browser = await puppeteer.launch({
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    });
+
+    const page = await browser.newPage();
+
+    await page.setContent(htmlContent, { waitUntil: 'networkidle0' });
+
+    const pdfPath = path.join(__dirname, 'reports', `${patientId}_Report.pdf`);
+    await page.pdf({
+      path: pdfPath,
+      format: 'A4',
+      printBackground: true
+    });
+
+    await browser.close();
+
+    // Send the PDF file to the client
+    res.download(pdfPath, `${patientId}_Report.pdf`, (err) => {
+      if (err) {
+        console.error('Error downloading file:', err);
+        res.status(500).send('Error generating PDF');
+      }
+    });
+  } catch (error) {
+    console.error('Error generating PDF:', error);
+    res.status(500).send('Error generating PDF');
+  }
+});
+
+
+
+
+
+
 
 
 

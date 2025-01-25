@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Report</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: rgb(2, 0, 36);
+            background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 35%, rgba(0, 212, 255, 1) 100%);
+            padding-bottom: 40px;
+        }
+
+        .navbar {
+            background-color: #007bff;
+        }
+
+        .navbar a.nav-link,
+        .nav-logo {
+            color: white !important;
+        }
+
+        .navbar a.nav-link:hover {
+            color: #d4e0ff !important;
+        }
+
+        .card {
+            border-radius: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a href="/home" class="navbar-brand nav-logo">Digital Prescription</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a href="/home" class="nav-link">Home</a></li>
+                    <li class="nav-item"><a href="/add-medicine" class="nav-link">Add Medicine</a></li>
+                    <li class="nav-item"><a href="/prescription" class="nav-link">Prescription</a></li>
+                    <li class="nav-item"><a href="/add-patient" class="nav-link">Add Patient</a></li>
+                    <li class="nav-item"><a href="/create-report" class="nav-link">Create Report</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <%= username %>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="/settings">Settings</a></li>
+                            <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8 col-sm-10">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h2 class="text-center mb-4">Create Report</h2>
+                        <form action="/generate-report" method="POST">
+                            <div class="mb-3">
+                                <label for="patientId" class="form-label">Patient ID:</label>
+                                <input type="number" id="patientId" name="patientId" class="form-control"
+                                    placeholder="Enter Patient ID" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="patientName" class="form-label">Patient Name:</label>
+                                <input type="text" id="patientName" name="patientName" class="form-control"
+                                    placeholder="Enter Patient Name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="patientAge" class="form-label">Age:</label>
+                                <input type="number" id="patientAge" name="patientAge" class="form-control"
+                                    placeholder="Enter Age" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="patientSex" class="form-label">Sex:</label>
+                                <select id="patientSex" name="patientSex" class="form-control">
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="refferedBy" class="form-label">Reffered By : </label>
+                                <input type="text" id="refferedBy" name="refferedBy" class="form-control" placeholder="Reffered doctor">
+                            </div>
+                            <div class="mb-3">
+                                <label for="sampleDate" class="form-label">Sample Date : </label>
+                                <input type="date" id="sampleDate" name="sampleDate" class="form-control" placeholder="Reffered doctor">
+                            </div>
+                            <div class="mb-3">
+                                <label for="labId" class="form-label">Lab ID:</label>
+                                <input type="number" id="labId" name="labId" class="form-control"
+                                    placeholder="Enter Lab ID" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="testName" class="form-label">Test Name:</label>
+                                <select id="testName" name="testName" class="form-control">
+                                    <option value="">Select Test</option>
+                                    <option value="Blood Grouping (Rh)">Blood Grouping (Rh)</option>
+                                    <option value="Diabetes">Diabetes</option>
+                                    <option value="CBC">CBC</option>
+                                    <option value="Dengue NS1">Dengue NS1</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="result" class="form-label">Result:</label>
+                                <select id="result" name="result" class="form-control">
+                                    <option value="">Select Result</option>
+                                    <option value="A+">A+</option>
+                                    <option value="A-">A-</option>
+                                    <option value="B+">B+</option>
+                                    <option value="B-">B-</option>
+                                    <option value="O+">O+</option>
+                                    <option value="O-">O-</option>
+                                    <option value="AB+">AB+</option>
+                                    <option value="AB-">AB-</option>
+                                    <option value="positive">Positive</option>
+                                    <option value="negative">Negative</option>
+                                    <option value="Abnormal">Abnormal</option>
+
+
+                                </select>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button type="button" class="btn btn-secondary"
+                                    onclick="window.location.href='/home'">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
