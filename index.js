@@ -392,6 +392,7 @@ app.post("/add-prescription",isAuthenticated, async (req, res) => {
   } = req.body;
 
   try {
+    const generatedOn = new Date().toLocaleString('en-US', { timeZone: 'Asia/Dhaka' });
     // Ensure these fields are always arrays
     const medicinesArray = Array.isArray(medicine) ? medicine : [medicine];
     const feedingRulesArray = Array.isArray(feedingRules) ? feedingRules : [feedingRules];
@@ -422,7 +423,7 @@ app.post("/add-prescription",isAuthenticated, async (req, res) => {
       nextVisitDate,
       complaintsList,
       bp, pulse, weight, temperature,
-      generatedOn: new Date().toLocaleString()
+      generatedOn
     });
 
     // Launch Puppeteer and generate PDF
@@ -502,7 +503,7 @@ app.post('/generate-report', async (req, res) => {
 
   try {
    
-
+    const generatedOn = new Date().toLocaleString('en-US', { timeZone: 'Asia/Dhaka' });
     // Render EJS template with data
     const templatePath = path.join(__dirname, 'views', 'report_template.ejs');
     const htmlContent = await ejs.renderFile(templatePath, {
@@ -515,7 +516,8 @@ app.post('/generate-report', async (req, res) => {
       sampleDate,
       testName,
       result,
-      generatedOn: new Date().toLocaleString()
+      generatedOn
+
     });
 
     // Launch Puppeteer and generate PDF
