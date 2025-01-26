@@ -57,13 +57,9 @@ const MedicineSchema = new mongoose.Schema({
     "manufacturer": { type: String, required: true }
 }, { versionKey: false });
 
-const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
-const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
-const GOOGLE_CALLBACK_URL = process.env.GOOGLE_CALLBACK_URL;
-
 const Medicine = new mongoose.model('Medicine_names', MedicineSchema);
 const Patients = new mongoose.model('Patients_Info', AddPatientSchema);
 const collection = new mongoose.model("Users", LoginSchema);
 
-module.exports = { collection, Medicine, Patients, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_CALLBACK_URL };
+module.exports = { collection, Medicine, Patients};
 

@@ -1,11 +1,8 @@
 const express = require('express');
 const bcryptjs = require('bcryptjs');
 require('dotenv').config();
-const { collection, Medicine, Patients, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_CALLBACK_URL } = require("./src/config");
-const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const { collection, Medicine, Patients} = require("./src/config");
 const session = require('express-session');
-const passport = require('passport');
-
 const path = require('path');
 const rateLimit = require('express-rate-limit');
 const puppeteer = require('puppeteer');
@@ -17,26 +14,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(session({
-  secret: "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", // Replace with a secure key
+  secret: "secret key", // Replace with a secure key
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: true }
 
 }));
 
-
-// Initialize Passport
-app.use(passport.initialize());
-app.use(passport.session());
-
-// Serialize and Deserialize User
-passport.serializeUser((user, done) => {
-  done(null, user);
-});
-
-passport.deserializeUser((user, done) => {
-  done(null, user);
-});
 
 // Define isAuthenticated middleware before routes
 function isAuthenticated(req, res, next) {
@@ -53,48 +36,6 @@ const loginLimiter = rateLimit({
 });
 
 app.set('view engine', 'ejs');
-
-passport.use(new GoogleStrategy({
-  clientID: GOOGLE_CLIENT_ID,
-  clientSecret: GOOGLE_CLIENT_SECRET,
-  callbackURL: GOOGLE_CALLBACK_URL,
-}, async (accessToken, refreshToken, profile, done) => {
-  try {
-    // Check if user exists in database
-    let user = await collection.findOne({ googleId: profile.id });
-    if (!user) {
-      // Create a new user if not found
-      user = await collection.create({
-        fullname: profile.displayName,
-        name: profile.emails[0].value,
-        googleId: profile.id,
-        qualification: 'N/A',
-        address: 'N/A',
-        mobileNumber: 'N/A',
-        password: 'N/A',
-      });
-    }
-    done(null, user);
-  } catch (error) {
-    done(error, null);
-  }
-}));
-
-
-app.get('/auth/google',
-  passport.authenticate('google', { scope: ['profile', 'email'] })
-);
-
-app.get('/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: '/login' }),
-  (req, res) => {
-    // Successful login
-    req.session.userId = req.user._id;
-    req.session.username = req.user.fullname;
-    res.redirect('/home'); // Redirect to home or dashboard
-  }
-);
-
 
 app.use(express.static(path.join(__dirname, "public")));
 
