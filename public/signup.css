@@ -10,7 +10,6 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     margin-top: 80px;
     margin-bottom: 80px;
-
 }
 
 h2 {
@@ -63,6 +62,54 @@ a {
 
 a:hover {
     text-decoration: underline;
+}
+
+/* Google Login Button */
+.LoginWithGoogle {
+    text-align: center;
+    margin-top: 20px;
+}
+
+button.LoginWithGoogleButton {
+    width: 100%;
+    padding: 10px;
+    background-color: #db4437;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+button.LoginWithGoogleButton:hover {
+    background-color: #c1351d;
+}
+
+.google-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    background: none !important;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .form-container {
+        padding: 15px;
+    }
+    button.submit-btn, 
+    button.LoginWithGoogleButton {
+        font-size: 14px;
+        padding: 8px;
+    }
+    .google-icon {
+        width: 16px;
+        height: 16px;
+        margin-right: 8px;
+    }
 }
 
 /* Toast styles */

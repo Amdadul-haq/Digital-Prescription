@@ -27,7 +27,7 @@ const LoginSchema = new mongoose.Schema({
         required: true
     },
     mobileNumber: {
-        type: Number,
+        type: String,
         required: true
     },
 
@@ -57,10 +57,12 @@ const MedicineSchema = new mongoose.Schema({
     "manufacturer": { type: String, required: true }
 }, { versionKey: false });
 
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 
 const Medicine = new mongoose.model('Medicine_names', MedicineSchema);
 const Patients = new mongoose.model('Patients_Info', AddPatientSchema);
 const collection = new mongoose.model("Users", LoginSchema);
 
-module.exports = { collection, Medicine, Patients };
+module.exports = { collection, Medicine, Patients, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET };
 

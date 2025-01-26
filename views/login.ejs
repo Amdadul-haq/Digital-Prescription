@@ -23,6 +23,18 @@
       <button type="submit" class="submit-btn">Login</button>
     </form>
     <p>Don't have an account? <a href="/signup">Signup</a></p>
+    <div class="LoginWithGoogle">
+
+      <a href="/auth/google" class="LoginWithGoogleButton">
+        <button type="submit" class="LoginWithGoogleButton">
+
+          <img src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png" alt="Google Logo"
+            class="google-icon"> Login With Google
+        </button></a>
+
+
+
+    </div>
 
     <!-- Toast -->
     <div id="toast" class="toast">
@@ -42,7 +54,7 @@
       setTimeout(() => toast.className = toast.className.replace("show", ""), 3500);
     } else if (successMessage) {
       toast.style.backgroundColor = "#4caf50";
-      toast.innerText = successMessage ;
+      toast.innerText = successMessage;
       toast.className = "toast show";
       setTimeout(() => toast.className = toast.className.replace("show", ""), 3500);
     }
