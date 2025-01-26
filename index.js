@@ -1,6 +1,6 @@
 const express = require('express');
 const bcryptjs = require('bcryptjs');
-const { collection, Medicine, Patients, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } = require("./src/config");
+const { collection, Medicine, Patients, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_CALLBACK_URL } = require("./src/config");
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const session = require('express-session');
 const passport = require('passport');
@@ -20,6 +20,8 @@ app.use(session({
   secret: "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", // Replace with a secure key
   resave: false,
   saveUninitialized: true,
+  cookie: { secure: true }
+
 }));
 
 
@@ -55,7 +57,7 @@ app.set('view engine', 'ejs');
 passport.use(new GoogleStrategy({
   clientID: GOOGLE_CLIENT_ID,
   clientSecret: GOOGLE_CLIENT_SECRET,
-  callbackURL: process.env.GOOGLE_CALLBACK_URL,
+  callbackURL: GOOGLE_CALLBACK_URL,
 }, async (accessToken, refreshToken, profile, done) => {
   try {
     // Check if user exists in database
