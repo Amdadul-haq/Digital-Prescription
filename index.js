@@ -11,7 +11,7 @@ const puppeteer = require('puppeteer');
 const ejs = require('ejs');
 require('dotenv').config();
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
