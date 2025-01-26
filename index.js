@@ -1,5 +1,6 @@
 const express = require('express');
 const bcryptjs = require('bcryptjs');
+require('dotenv').config();
 const { collection, Medicine, Patients, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_CALLBACK_URL } = require("./src/config");
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const session = require('express-session');
@@ -9,7 +10,6 @@ const path = require('path');
 const rateLimit = require('express-rate-limit');
 const puppeteer = require('puppeteer');
 const ejs = require('ejs');
-require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
