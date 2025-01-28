@@ -122,6 +122,8 @@
                                 <td>
                                     <%= patient.pid %>
                                 </td>
+
+
                                 <td>
                                     <button class="btn btn-warning btn-sm"
                                         onclick="openUpdatePopup('<%= patient._id %>', '<%= patient.Patient_name %>', '<%= patient.Patient_address %>', '<%= patient.Patient_age %>', '<%= patient.gender %>', '<%= patient.Patient_mobile %>')">
@@ -198,7 +200,7 @@
 
 
     <script>
-     let currentPatientId = null;
+        let currentPatientId = null;
 
         function openDeletePopup(patientId) {
             currentPatientId = patientId;
@@ -217,8 +219,8 @@
                 const response = await fetch(`/delete-patient/${currentPatientId}`, { method: 'DELETE' });
                 const result = await response.json();
                 if (result.success) {
-                    
-                   // alert("Patient deleted successfully.");
+
+                    // alert("Patient deleted successfully.");
                     location.reload(); // Refresh the page to reflect changes
                 } else {
                     alert("Failed to delete the patient.");

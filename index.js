@@ -311,8 +311,6 @@ app.post('/add-patient', isAuthenticated, async (req, res) => {
     });
   }
 });
-
-
 app.get("/patient-details", isAuthenticated, async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
@@ -459,8 +457,6 @@ app.post("/add-prescription",isAuthenticated, async (req, res) => {
   }
 });
 
-
-
 app.delete('/delete-patient/:id', async (req, res) => {
   try {
     const result = await Patients.deleteOne({ _id: req.params.id, addedBy: req.session.userId });
@@ -552,14 +548,6 @@ app.post('/generate-report', async (req, res) => {
     res.status(500).send('Error generating PDF');
   }
 });
-
-
-
-
-
-
-
-
 
 
 // Start Server

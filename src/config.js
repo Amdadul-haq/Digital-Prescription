@@ -41,7 +41,7 @@ const LoginSchema = new mongoose.Schema({
 const AddPatientSchema = new mongoose.Schema({
     Patient_name: { type: String, required: true },
     Patient_address: { type: String },
-    Patient_age: { type: Number, required: true },
+    Patient_age: { type: String, required: true },
     gender: { type: String, required: true },
     Patient_mobile: { type:String, required: true,unique:false},
     pid: { type: String, required: true, unique: true },
