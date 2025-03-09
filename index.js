@@ -20,7 +20,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(session({
-  secret: "secret key", // Replace with a secure key
+  secret: "secret key",
   resave: false,
   saveUninitialized: true,
 
