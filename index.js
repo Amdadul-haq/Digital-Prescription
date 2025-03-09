@@ -5,7 +5,6 @@ const { collection, Medicine, Patients} = require("./src/config");
 const session = require('express-session');
 const path = require('path');
 const rateLimit = require('express-rate-limit');
-app.set('trust proxy', 1); // Trust first proxy
 //const puppeteer = require('puppeteer');
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -14,6 +13,7 @@ const chromium = isProduction ? require('@sparticuz/chromium') : null;
 
 const ejs = require('ejs');
 const app = express();
+app.set('trust proxy', 1); // Trust first proxy
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
