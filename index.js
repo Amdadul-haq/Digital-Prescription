@@ -55,7 +55,7 @@ app.get('/signup', (req, res) => {
 
 app.get('/home',isAuthenticated, (req, res) => {
   if (!req.session.username) {
-    return res.redirect('/'); // Redirect to Login page If not logged In
+    return res.redirect('/'); // Redirect To Login page If not logged In
   }
   res.render('home', { username: req.session.username, successMessage: '', errorMessage:'' });
 });
