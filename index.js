@@ -5,7 +5,12 @@ const { collection, Medicine, Patients} = require("./src/config");
 const session = require('express-session');
 const path = require('path');
 const rateLimit = require('express-rate-limit');
-const puppeteer = require('puppeteer');
+//const puppeteer = require('puppeteer');
+const isProduction = process.env.NODE_ENV === 'production';
+
+const puppeteer = isProduction ? require('puppeteer-core') : require('puppeteer');
+const chromium = isProduction ? require('@sparticuz/chromium') : null;
+
 const ejs = require('ejs');
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -427,9 +432,21 @@ app.post("/add-prescription",isAuthenticated, async (req, res) => {
     });
 
     // Launch Puppeteer and generate PDF
-    const browser = await puppeteer.launch({
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
-    });
+    // const browser = await puppeteer.launch({
+    //   args: ['--no-sandbox', '--disable-setuid-sandbox']
+    // });
+    const browser = await puppeteer.launch(
+      isProduction
+        ? {
+          executablePath: await chromium.executablePath(),
+          args: chromium.args,
+          headless: chromium.headless,
+        }
+        : {
+          headless: true,
+          args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        }
+    );
 
     const page = await browser.newPage();
 
