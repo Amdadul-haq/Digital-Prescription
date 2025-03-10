@@ -441,7 +441,9 @@ app.post("/add-prescription",isAuthenticated, async (req, res) => {
     const browser = await puppeteer.launch(
       isProduction
         ? {
-          executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/opt/render/.cache/puppeteer/chrome/linux-134.0.6998.35/chrome', // Add a fallback
+          // executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/opt/render/.cache/puppeteer/chrome/linux-134.0.6998.35/chrome', // Add a fallback
+          executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || await chromium.executablePath(),
+
           args: [...chromium.args, '--no-sandbox', '--disable-setuid-sandbox'],
           headless: chromium.headless,
         }
