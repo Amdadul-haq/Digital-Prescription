@@ -439,8 +439,8 @@ app.post("/add-prescription",isAuthenticated, async (req, res) => {
     const browser = await puppeteer.launch(
       isProduction
         ? {
-          executablePath: await chromium.executablePath(),
-          args: chromium.args,
+          executablePath: await chromium.executablePath() || '/usr/bin/chromium-browser', // Add a fallback
+          args: [...chromium.args, '--no-sandbox', '--disable-setuid-sandbox'],
           headless: chromium.headless,
         }
         : {
