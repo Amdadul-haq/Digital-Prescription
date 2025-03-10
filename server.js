@@ -10,6 +10,7 @@ const ejs = require('ejs');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+app.set('trust proxy', 1);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -427,10 +428,12 @@ app.post("/add-prescription",isAuthenticated, async (req, res) => {
     });
 
     // Launch Puppeteer and generate PDF
+    // **🔹 Puppeteer launch with correct Chrome path**
     const browser = await puppeteer.launch({
+      headless: true,
+      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/opt/render/.cache/puppeteer/chrome/linux-134.0.6998.35/chrome',
       args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
-    
     const page = await browser.newPage();
 
     await page.setContent(htmlContent, { waitUntil: 'networkidle0' });
@@ -519,7 +522,10 @@ app.post('/generate-report', async (req, res) => {
     });
 
     // Launch Puppeteer and generate PDF
+    // **🔹 Puppeteer launch with correct Chrome path**
     const browser = await puppeteer.launch({
+      headless: true,
+      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/opt/render/.cache/puppeteer/chrome/linux-134.0.6998.35/chrome',
       args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
 
