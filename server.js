@@ -453,8 +453,10 @@ app.post("/add-prescription",isAuthenticated, async (req, res) => {
 
     // Launch Puppeteer and generate PDF
     const browser = await puppeteer.launch({
+      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/opt/render/.cache/puppeteer/chrome/linux-134.0.6998.35/chrome-linux64/chrome', // Exact path from logs
       args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
+
     
     const page = await browser.newPage();
 
@@ -545,8 +547,10 @@ app.post('/generate-report', async (req, res) => {
 
     // Launch Puppeteer and generate PDF
     const browser = await puppeteer.launch({
+      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/opt/render/.cache/puppeteer/chrome/linux-134.0.6998.35/chrome-linux64/chrome', // Exact path from logs
       args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
+
 
     const page = await browser.newPage();
 
