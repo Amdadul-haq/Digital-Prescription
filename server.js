@@ -10,6 +10,8 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 const puppeteer = isProduction ? require('puppeteer-core') : require('puppeteer');
 const chromium = isProduction ? require('@sparticuz/chromium') : null;
+process.env.PUPPETEER_CACHE_DIR = '/opt/render/.cache/puppeteer';
+
 
 const ejs = require('ejs');
 const app = express();
