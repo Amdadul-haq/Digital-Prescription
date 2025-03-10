@@ -5,18 +5,10 @@ const { collection, Medicine, Patients} = require("./src/config");
 const session = require('express-session');
 const path = require('path');
 const rateLimit = require('express-rate-limit');
-//const puppeteer = require('puppeteer');
-const isProduction = process.env.NODE_ENV === 'production';
-
-const puppeteer = isProduction ? require('puppeteer-core') : require('puppeteer');
-const chromium = isProduction ? require('@sparticuz/chromium') : null;
-process.env.PUPPETEER_CACHE_DIR = '/opt/render/.cache/puppeteer';
-
-
+const puppeteer = require('puppeteer');
 const ejs = require('ejs');
 const app = express();
-app.set('trust proxy', 1); // Trust first proxy
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 30001;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -435,24 +427,10 @@ app.post("/add-prescription",isAuthenticated, async (req, res) => {
     });
 
     // Launch Puppeteer and generate PDF
-    // const browser = await puppeteer.launch({
-    //   args: ['--no-sandbox', '--disable-setuid-sandbox']
-    // });
-    const browser = await puppeteer.launch(
-      isProduction
-        ? {
-          // executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/opt/render/.cache/puppeteer/chrome/linux-134.0.6998.35/chrome', // Add a fallback
-          executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || await chromium.executablePath(),
-
-          args: [...chromium.args, '--no-sandbox', '--disable-setuid-sandbox'],
-          headless: chromium.headless,
-        }
-        : {
-          headless: true,
-          args: ['--no-sandbox', '--disable-setuid-sandbox'],
-        }
-    );
-
+    const browser = await puppeteer.launch({
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    });
+    
     const page = await browser.newPage();
 
     await page.setContent(htmlContent, { waitUntil: 'networkidle0' });
