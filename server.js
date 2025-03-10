@@ -375,6 +375,30 @@ app.get("/search-patient", isAuthenticated, async (req, res) => {
   }
 });
 
+app.get("/debug-chrome-path", async (req, res) => {
+  try {
+    const browser = await puppeteer.launch({
+      headless: "new",
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    });
+
+    const browserProcess = browser.process();
+    if (browserProcess) {
+      console.log("Puppeteer Chrome Path:", browserProcess.spawnargs);
+      res.send("Check logs for Chrome path.");
+    } else {
+      console.log("Could not retrieve Chrome path.");
+      res.send("Could not retrieve Chrome path.");
+    }
+
+    await browser.close();
+  } catch (error) {
+    console.error("Error launching browser:", error);
+    res.status(500).send("Error launching browser");
+  }
+});
+
+
 app.post("/add-prescription",isAuthenticated, async (req, res) => {
   const {
     id,
@@ -428,12 +452,10 @@ app.post("/add-prescription",isAuthenticated, async (req, res) => {
     });
 
     // Launch Puppeteer and generate PDF
-    // **🔹 Puppeteer launch with correct Chrome path**
     const browser = await puppeteer.launch({
-      headless: true,
-      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/opt/render/.cache/puppeteer/chrome/linux-134.0.6998.35/chrome',
       args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
+    
     const page = await browser.newPage();
 
     await page.setContent(htmlContent, { waitUntil: 'networkidle0' });
@@ -522,10 +544,7 @@ app.post('/generate-report', async (req, res) => {
     });
 
     // Launch Puppeteer and generate PDF
-    // **🔹 Puppeteer launch with correct Chrome path**
     const browser = await puppeteer.launch({
-      headless: true,
-      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/opt/render/.cache/puppeteer/chrome/linux-134.0.6998.35/chrome',
       args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
 
