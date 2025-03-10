@@ -8,7 +8,7 @@ const rateLimit = require('express-rate-limit');
 const puppeteer = require('puppeteer');
 const ejs = require('ejs');
 const app = express();
-const PORT = process.env.PORT || 30001;
+const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
