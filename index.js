@@ -8,7 +8,7 @@ const rateLimit = require('express-rate-limit');
 const puppeteer = require('puppeteer');
 const ejs = require('ejs');
 const app = express();
-// app.set('trust proxy', 1); // Trust first proxy
+
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
